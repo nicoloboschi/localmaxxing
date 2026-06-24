@@ -10,6 +10,54 @@ rank them on:
 
 Built for an Apple M3 Max (36 GB). Results are written to `results/*.json`.
 
+## Results
+
+Apple M3 Max (36 GB), 4-bit MLX, `max_tokens=256`, greedy decoding. Full data in
+[`results/models/`](results/models). Regenerate the ranking with
+`uv run mlx-bench --rank`.
+
+### Summary
+
+| Model | Params | Backend | Decode 1× (tok/s) | Decode peak (tok/s @conc) | Prefill @1k (tok/s) | JSON-schema |
+|---|--:|:--:|--:|--:|--:|:--:|
+| Qwen3.5-2B-4bit | 2.0B | lm | 88.6 | 250 @c8 | 1788 | 4/5 (0.8) |
+| Qwen3.5-4B-4bit | 4.0B | lm | 69.9 | 149 @c8 | 825 | 5/5 (1.0) |
+| Phi-4-mini-instruct-4bit | 3.8B | lm | 67.8 | 208 @c8 | 1081 | 5/5 (1.0) |
+| gemma-3-4b-it-qat-4bit | 4.3B | lm | 63.0 | 197 @c8 | 970 | 5/5 (1.0) |
+| Qwen3.5-9B-4bit | 9.0B | lm | 27.8 | 73 @c8 | 345 | 5/5 (1.0) |
+| gemma-4-12B-it-4bit | 12.0B | vlm | 26.9 | 29 @c2 ¹ | 320 | 5/5 (1.0) |
+| gemma-3-12b-it-qat-4bit | 12.0B | lm | 25.9 | 52 @c4 | 336 | 5/5 (1.0) |
+| phi-4-4bit | 14.7B | lm | 25.9 | 38 @c4 | 301 | 5/5 (1.0) |
+| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | lm | 8.7 | 21 @c8 | 152 | 5/5 (1.0) |
+| gemma-3-27b-it-qat-4bit | 27.0B | lm | 7.1 | 20 @c8 | 148 | 5/5 (1.0) |
+| Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | lm | 5.7 | 20 @c8 | 183 | 5/5 (1.0) |
+
+¹ gemma-4 runs via mlx-vlm, which has no continuous batching — its concurrency
+numbers reflect queuing, not GPU batching.
+
+### Prefill throughput by input size (tok/s)
+
+| Model | 100t | 500t | 1000t | 5000t | 10000t |
+|---|--:|--:|--:|--:|--:|
+| Qwen3.5-2B-4bit | 639 | 1422 | 1788 | 1974 | 2273 |
+| Phi-4-mini-instruct-4bit | 521 | 950 | 1081 | 1080 | 916 |
+| gemma-3-4b-it-qat-4bit | 449 | 821 | 970 | 1048 | 1064 |
+| Qwen3.5-4B-4bit | 257 | 724 | 825 | 985 | 931 |
+| Qwen3.5-9B-4bit | 168 | 253 | 345 | 386 | 370 |
+| gemma-3-12b-it-qat-4bit | 226 | 308 | 336 | 334 | 327 |
+| gemma-4-12B-it-4bit | 183 | 260 | 320 | 331 | 302 |
+| phi-4-4bit | 238 | 288 | 301 | 286 | 245 |
+| Mistral-Small-3.2-24B-Instruct-2506-4bit | 129 | 170 | 183 | 173 | 143 |
+| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 96 | 142 | 152 | 152 | 121 |
+| gemma-3-27b-it-qat-4bit | 119 | 141 | 148 | 141 | 97 |
+
+**Takeaways:** Qwen3.5-2B is the throughput leader (decode + prefill) and the
+only model below 5/5 on schema (its `<think>` trace occasionally eats the token
+budget). Phi-4-mini and gemma-3-4b are the best 4B-class all-rounders. Gemma-4
+runs correctly via the mlx-vlm backend with throughput comparable to gemma-3-12b.
+Decode scales ~3–4× with concurrency on small models; 24–27B models are usable
+but single-stream-bound (~6–9 tok/s) on this hardware.
+
 ## How it works
 
 For each model the runner does **download → serve → measure → delete**:
