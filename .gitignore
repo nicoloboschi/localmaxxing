@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# uv / venv (uv.lock IS committed for reproducibility)
+.venv/
+
+# Benchmark run artifacts (keep curated result JSONs, drop noise)
+results/*.log
+results/server_logs/
+results/*.SUPERSEDED.json
+results/archive/
+
+# OS
+.DS_Store
