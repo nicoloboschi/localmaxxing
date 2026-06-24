@@ -1,0 +1,160 @@
+{
+  "repo": "mlx-community/phi-4-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-06-24 13:01:15",
+  "result": {
+    "repo": "mlx-community/phi-4-4bit",
+    "family": "Phi-4",
+    "params_b": 14.7,
+    "size_gb": 8.3,
+    "downloads_30d": 959,
+    "batch_safe": true,
+    "status": "ok",
+    "download_s": 725.2,
+    "load_s": 2.2,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 133,
+          "ttft_s": 0.5601,
+          "prefill_tokens_per_s": 237.5
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 534,
+          "ttft_s": 1.8512,
+          "prefill_tokens_per_s": 288.5
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1037,
+          "ttft_s": 3.4503,
+          "prefill_tokens_per_s": 300.6
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5048,
+          "ttft_s": 17.6198,
+          "prefill_tokens_per_s": 286.5
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10062,
+          "ttft_s": 41.0391,
+          "prefill_tokens_per_s": 245.2
+        }
+      ],
+      "max_prefill_tokens_per_s": 300.6
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 5,
+      "schema_ok": 5,
+      "parse_rate": 1.0,
+      "schema_follow_rate": 1.0,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "```json\n{\n  \"name\": \"Dr. Maria Chen\",\n  \"age\": 42,\n  \"occupation\": \"cardiologist\",\n  \"city\": \"Boston\"\n}\n```"
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "```json\n{\n  \"sentiment\": \"mixed\",\n  \"confidence\": 0.9\n}\n```"
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "```json\n{\n  \"products\": [\n    {\n      \"name\": \"AeroBook laptop\",\n      \"price_usd\": 1299\n    },\n    {\n      \"name\": \"Pulse smartwatch\",\n      \"price_usd\": 199\n    },\n    {\n      \"name\": \"Nimbus earbuds\",\n      \"price_usd\": 79\n    }\n  ]\n}\n```"
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "```json\n{\n  \"title\": \"The AI Summit\",\n  \"date\": \"2026-09-14\",\n  \"location\": \"San Francisco\",\n  \"speakers\": [\n    {\n      \"name\": \"Ada Lovelace\",\n      \"role\": \"keynote\"\n    },\n    {\n      \"name\": \"Alan Turing\",\n      \"role\": \"workshop\"\n    }\n  ]\n}\n```"
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "```json\n{\n  \"ticket_id\": 4471,\n  \"urgent\": true,\n  \"affected_users\": 1500,\n  \"summary\": \"User cannot log in after the update.\"\n}\n```"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 9.887,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 25.89,
+          "per_request_tokens_per_s_mean": 25.9,
+          "mean_latency_s": 9.885
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 14.803,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 34.59,
+          "per_request_tokens_per_s_mean": 17.3,
+          "mean_latency_s": 14.8
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 27.082,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 37.81,
+          "per_request_tokens_per_s_mean": 9.46,
+          "mean_latency_s": 27.072
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 71.218,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 28.76,
+          "per_request_tokens_per_s_mean": 3.6,
+          "mean_latency_s": 71.131
+        }
+      ],
+      "single_stream_tokens_per_s": 25.89,
+      "peak_aggregate_tokens_per_s": 37.81,
+      "peak_aggregate_at_concurrency": 4
+    },
+    "cache_deleted": true
+  }
+}

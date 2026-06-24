@@ -1,0 +1,160 @@
+{
+  "repo": "mlx-community/Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-06-24 13:01:15",
+  "result": {
+    "repo": "mlx-community/Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
+    "family": "Qwen3.5-Distill",
+    "params_b": 27.0,
+    "size_gb": 15.2,
+    "downloads_30d": 25284,
+    "batch_safe": true,
+    "status": "ok",
+    "download_s": 1288.3,
+    "load_s": 2.2,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 139,
+          "ttft_s": 1.4407,
+          "prefill_tokens_per_s": 96.5
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 540,
+          "ttft_s": 3.8081,
+          "prefill_tokens_per_s": 141.8
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1043,
+          "ttft_s": 6.8498,
+          "prefill_tokens_per_s": 152.3
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5054,
+          "ttft_s": 33.226,
+          "prefill_tokens_per_s": 152.1
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10069,
+          "ttft_s": 83.372,
+          "prefill_tokens_per_s": 120.8
+        }
+      ],
+      "max_prefill_tokens_per_s": 152.3
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 5,
+      "schema_ok": 5,
+      "parse_rate": 1.0,
+      "schema_follow_rate": 1.0,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"name\":\"Maria Chen\",\"age\":42,\"occupation\":\"cardiologist\",\"city\":\"Boston\"}\nLet me analyze the text to extract the required information:\n\nText: \"Dr. Maria Chen is 42 years old and works as a cardiologist in Boston.\"\n\n1. **Name**: The text starts with \"Dr. Maria Chen\" - \"Dr.\" is a title, so the actual name is \"Maria Chen\"\n\n2. **Age**: The text states \"42 years old\" - so the age is 42\n\n3. **Occupation**: The text says \"works as a cardiologist\" - so the occupation is \"cardiologist\"\n\n4. **City**: The text ends with \"in Boston\" - so the city is \"Boston\"\n\nAll four required fields can be extracted from this text. I'll format this as a JSON object with the exact structure specified in the schema."
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"sentiment\": \"mixed\",\n  \"confidence\": 0.95\n}\nLet me analyze the sentiment of this review: \"The battery life is terrible but the screen is gorgeous.\"\n\nBreaking down the review:\n1. \"The battery life is terrible\" - This is clearly negative sentiment. The word \"terrible\" is a strong negative descriptor.\n\n2. \"but\" - This conjunction signals a contrast or shift in the statement.\n\n3. \"the screen is gorgeous\" - This is clearly positive sentiment. The word \"gorgeous\" is a strong positive descriptor.\n\nThis review contains both:\n- A negative aspect (battery life)\n- A positive aspect (screen quality)\n\nWhen a review contains both positive and negative sentiments about different aspects of a product, this is classified as \"mixed\" sentiment. The reviewer is neither completely satisfied nor completely"
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"products\": [\n    {\n      \"name\": \"AeroBook laptop\",\n      \"price_usd\": 1299\n    },\n    {\n      \"name\": \"Pulse smartwatch\",\n      \"price_usd\": 199\n    },\n    {\n      \"name\": \"Nimbus earbuds\",\n      \"price_usd\": 79\n    }\n  ]\n}\nLet me analyze the input text to extract the products mentioned.\n\nInput text: 'We sell the AeroBook laptop ($1299), the Pulse smartwatch ($199), and the Nimbus earbuds ($79).'\n\nI need to identify each product and its price:\n\n1. \"AeroBook laptop\" - Price: $1299\n2. \"Pulse smartwatch\" - Price: $199\n3. \"Nimbus earbuds\" - Price: $79\n\nNow I need to format this as a JSON object according to the schema:\n- Root object with \"products\" array\n- Each product has \"name\" (string) and \"price_usd\" (number)\n- Must have at least 3 items (minItems: 3)\n\nThe extracted data:\n- Product 1"
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"title\": \"The AI Summit\",\n  \"date\": \"2026-09-14\",\n  \"location\": \"San Francisco\",\n  \"speakers\": [\n    {\n      \"name\": \"Ada Lovelace\",\n      \"role\": \"keynote\"\n    },\n    {\n      \"name\": \"Alan Turing\",\n      \"role\": \"workshop\"\n    }\n  ]\n}\nLet me analyze the input text and extract the required information:\n\nInput: \"The AI Summit happens on 2026-09-14 in San Francisco. Speakers include Ada Lovelace (keynote) and Alan Turing (workshop).\"\n\nExtracting fields:\n1. **title**: \"The AI Summit\" - This is clearly the event name at the beginning of the sentence\n2. **date**: \"2026-09-14\" - Explicitly stated after \"on\"\n3. **location**: \"San Francisco\" - Stated after \"in\"\n4. **speakers**: Two speakers mentioned:\n   - Ada Lovelace with role \"keynote\" (in parentheses)\n   - Alan Turing with role \"workshop\" "
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"ticket_id\":4471,\"urgent\":true,\"affected_users\":1500,\"summary\":\"User cannot log in after the update\"}\nLet me analyze the support ticket text: 'User cannot log in after the update. This is urgent and affects 1500 users. Ticket #4471.'\n\nI need to extract:\n1. ticket_id: Looking for \"Ticket #4471\" \u2192 4471\n2. urgent: The text explicitly states \"This is urgent\" \u2192 true\n3. affected_users: The text states \"affects 1500 users\" \u2192 1500\n4. summary: A concise description of the issue \u2192 \"User cannot log in after the update\"\n\nNow I'll construct the JSON object following the schema exactly:\n- ticket_id: integer (4471)\n- urgent: boolean (true)\n- affected_users: integer (1500)\n- summary: string (\"User cannot log in after the update\")\n\nI must output ONLY the JSON object with no markdown fences, no explanation"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 29.509,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 8.68,
+          "per_request_tokens_per_s_mean": 8.68,
+          "mean_latency_s": 29.498
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 35.48,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 14.43,
+          "per_request_tokens_per_s_mean": 7.22,
+          "mean_latency_s": 35.461
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 54.013,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 18.96,
+          "per_request_tokens_per_s_mean": 4.74,
+          "mean_latency_s": 53.986
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 98.853,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 20.72,
+          "per_request_tokens_per_s_mean": 2.6,
+          "mean_latency_s": 98.625
+        }
+      ],
+      "single_stream_tokens_per_s": 8.68,
+      "peak_aggregate_tokens_per_s": 20.72,
+      "peak_aggregate_at_concurrency": 8
+    },
+    "cache_deleted": true
+  }
+}

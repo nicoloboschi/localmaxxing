@@ -40,6 +40,8 @@ def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
         levels=(1, 2, 4, 8), log_dir: Path | None = None, only=None):
     log_dir = log_dir or results_path.parent / "server_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
+    models_dir = results_path.parent / "models"
+    models_dir.mkdir(parents=True, exist_ok=True)
 
     if only:
         models = [m for m in MODELS if any(o.lower() in m.repo.lower() for o in only)]
@@ -61,6 +63,22 @@ def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
     def flush():
         report["updated_at"] = _now()
         results_path.write_text(json.dumps(report, indent=2))
+
+    def write_model(entry):
+        """Write one self-contained JSON per model (machine + config + result).
+
+        Overwritten when the model is re-run (e.g. via --only), so each file
+        always holds that model's latest measurement.
+        """
+        doc = {
+            "repo": entry["repo"],
+            "machine": machine,
+            "config": report["config"],
+            "measured_at": _now(),
+            "result": entry,
+        }
+        path = models_dir / (entry["repo"].replace("/", "__") + ".json")
+        path.write_text(json.dumps(doc, indent=2))
 
     flush()
 
@@ -157,6 +175,7 @@ def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
                     shutil.rmtree(cache_dir, ignore_errors=True)
                     entry["cache_deleted"] = True
             flush()
+            write_model(entry)
 
     report["finished_at"] = _now()
     flush()

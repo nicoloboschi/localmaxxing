@@ -15,14 +15,26 @@ from .runner import run
 RESULTS_DIR = Path(__file__).resolve().parents[2] / "results"
 
 
-def _print_ranking(path: Path):
-    report = json.loads(path.read_text())
+def _load_models_dir(models_dir: Path):
+    """Aggregate per-model JSON files into a {models: [...]} report."""
+    docs = []
+    for f in sorted(models_dir.glob("*.json")):
+        try:
+            doc = json.loads(f.read_text())
+        except (json.JSONDecodeError, OSError):
+            continue
+        # per-model file shape is {repo, machine, config, measured_at, result}
+        docs.append(doc.get("result", doc))
+    return {"models": docs, "source": f"{models_dir} ({len(docs)} models)"}
+
+
+def _print_ranking(report: dict, label: str):
     ok = [m for m in report["models"] if m.get("status") in ("ok", "partial")]
     if not ok:
-        print("No completed models in", path)
+        print("No completed models in", label)
         return
 
-    print(f"\nResults from {path.name}  ({report.get('started_at')})\n")
+    print(f"\nResults from {label}\n")
 
     def _has_speed(m, key):
         return isinstance(m.get("speed"), dict) and m["speed"].get(key) is not None
@@ -61,8 +73,11 @@ def _print_ranking(path: Path):
 
 def main():
     ap = argparse.ArgumentParser(description="Benchmark OSS LLMs on the MLX backend.")
-    ap.add_argument("--rank", action="store_true", help="Print ranking from the latest results and exit.")
-    ap.add_argument("--results", type=str, default=None, help="Path to results JSON (for --rank).")
+    ap.add_argument("--rank", action="store_true",
+                    help="Print ranking and exit. Aggregates the per-model files in results/models/ "
+                         "unless --results is given.")
+    ap.add_argument("--results", type=str, default=None,
+                    help="Path to a combined results JSON to rank instead of the per-model dir.")
     ap.add_argument("--port", type=int, default=8080)
     ap.add_argument("--max-tokens", type=int, default=256)
     ap.add_argument("--levels", type=int, nargs="+", default=[1, 2, 4, 8])
@@ -73,27 +88,30 @@ def main():
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     if args.rank:
-        path = Path(args.results) if args.results else _latest_results()
-        if path is None:
-            print("No results files found in", RESULTS_DIR)
-            return
-        _print_ranking(path)
+        if args.results:
+            path = Path(args.results)
+            if not path.exists():
+                print("No such results file:", path)
+                return
+            report = json.loads(path.read_text())
+            _print_ranking(report, path.name)
+        else:
+            report = _load_models_dir(RESULTS_DIR / "models")
+            if not report["models"]:
+                print("No per-model results found in", RESULTS_DIR / "models")
+                return
+            _print_ranking(report, report["source"])
         return
 
     ts = time.strftime("%Y%m%d_%H%M%S")
     results_path = RESULTS_DIR / f"run_{ts}.json"
     latest = RESULTS_DIR / "latest.json"
-    print(f"Writing results to {results_path}")
+    print(f"Writing per-model results to {RESULTS_DIR / 'models'}/  (combined: {results_path})")
     report = run(results_path, port=args.port, max_tokens=args.max_tokens,
                  levels=tuple(args.levels), only=args.only)
     latest.write_text(json.dumps(report, indent=2))
     print(f"\nDone. {results_path}")
-    _print_ranking(results_path)
-
-
-def _latest_results():
-    files = sorted(RESULTS_DIR.glob("run_*.json"))
-    return files[-1] if files else None
+    _print_ranking(report, results_path.name)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,161 @@
+{
+  "repo": "mlx-community/Qwen3.5-2B-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-06-24 14:51:27",
+  "result": {
+    "repo": "mlx-community/Qwen3.5-2B-4bit",
+    "family": "Qwen3.5",
+    "params_b": 2.0,
+    "size_gb": 1.7,
+    "downloads_30d": 11055,
+    "batch_safe": true,
+    "backend": "lm",
+    "status": "ok",
+    "download_s": 159.7,
+    "load_s": 5.4,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 139,
+          "ttft_s": 0.2174,
+          "prefill_tokens_per_s": 639.3
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 540,
+          "ttft_s": 0.3798,
+          "prefill_tokens_per_s": 1421.7
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1043,
+          "ttft_s": 0.5834,
+          "prefill_tokens_per_s": 1787.9
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5054,
+          "ttft_s": 2.5598,
+          "prefill_tokens_per_s": 1974.4
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10069,
+          "ttft_s": 4.4299,
+          "prefill_tokens_per_s": 2272.9
+        }
+      ],
+      "max_prefill_tokens_per_s": 2272.9
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 4,
+      "schema_ok": 4,
+      "parse_rate": 0.8,
+      "schema_follow_rate": 0.8,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": false,
+          "schema_ok": false,
+          "error": "unparseable",
+          "raw": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input text: 'Dr. Maria Chen is 42 years old and works as a cardiologist in Boston.'\n    *   Task: Extract person's info from the text.\n    *   Output format: A single JSON object.\n    *   Constraints:\n        *   Strictly conform to the provided JSON Schema.\n        *   No prose, no markdown fences (```json ... ```), no explanation.\n        *   Only the JSON object itself.\n\n2.  **Analyze the JSON Schema:**\n    *   Root type: \"object\"\n    *   Properties:\n        *   \"name\": string\n        *   \"age\": integer\n        *   \"occupation\": string\n        *   \"city\": string\n    *   Required fields: \"name\", \"age\", \"occupation\", \"city\"\n    *   Additional properties: false (implies strict adherence to these fields).\n\n3.  **Extract Information:**\n"
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A review string ('The battery life is terrible but the screen is gorgeous.')\n    *   Task: Classify the sentiment of the review.\n    *   Output Format: A single JSON object.\n    *   Constraints:\n        *   Strictly conform to the provided JSON Schema.\n        *   No prose (no text outside the JSON).\n        *   No markdown fences (no ```json ... ```).\n        *   No explanation (no reasoning).\n\n2.  **Analyze the Input Review:**\n    *   Text: \"The battery life is terrible but the screen is gorgeous.\"\n    *   Meaning: The battery is bad (negative), but the screen is good (positive).\n    *   Sentiment: Mixed (contains both negative and positive elements).\n\n3.  **Determine the Sentiment Class:**\n    *   \"terrible\" = Negative.\n    "
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A text string containing product information: \"We sell the AeroBook laptop ($1299), the Pulse smartwatch ($199), and the Nimbus earbuds ($79).\"\n    *   Task: Extract products mentioned from the text.\n    *   Output Format: A JSON object.\n    *   Constraints:\n        *   Strictly conform to the provided JSON Schema.\n        *   No prose, no markdown fences (```).\n        *   No explanation.\n        *   Only a single JSON object.\n\n2.  **Analyze the JSON Schema:**\n    *   Root object: `{}`.\n    *   Required field: `\"products\"`.\n    *   `products` type: `\"array\"`.\n    *   `items` type: `\"object\"`.\n    *   `items` properties:\n        *   `\"name\"`: `\"string\"`.\n        *   `\"price_usd\"`: `\"number\"`.\n        *   `\"required\"`: `[\"name\","
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A text string describing an event (\"The AI Summit happens on 2026-09-14 in San Francisco. Speakers include Ada Lovelace (keynote) and Alan Turing (workshop).\").\n    *   Task: Extract information from the text and format it into a specific JSON structure.\n    *   Constraints:\n        *   Output must be a *single* JSON object.\n        *   No prose, no markdown fences (```json ... ```).\n        *   Strictly conform to the provided JSON Schema.\n        *   Keys: \"title\", \"date\", \"location\", \"speakers\".\n        *   \"speakers\" array must contain objects with \"name\" and \"role\" (enum: \"keynote\", \"workshop\", \"panel\").\n\n2.  **Analyze the Input Text:**\n    *   \"The AI Summit happens on 2026-09-14 in San Francisco.\"\n    *   \"Speakers inclu"
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "Thinking Process:\n\n1.  **Analyze the Request:**\n    *   Input: A support ticket description: 'User cannot log in after the update. This is urgent and affects 1500 users. Ticket #4471.'\n    *   Task: Summarize the ticket.\n    *   Output Format: A single JSON object.\n    *   Constraints:\n        *   Strictly conform to the provided JSON Schema.\n        *   No prose, no markdown fences (```json ... ```).\n        *   No explanation.\n\n2.  **Analyze the JSON Schema:**\n    *   Root type: \"object\"\n    *   Properties required:\n        *   `ticket_id`: integer\n        *   `urgent`: boolean\n        *   `affected_users`: integer\n        *   `summary`: string\n    *   Additional properties: false (meaning only these fields are allowed).\n\n3.  **Process the Input Data:**\n    *   Input text: 'User cannot l"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 2.889,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 88.6,
+          "per_request_tokens_per_s_mean": 88.61,
+          "mean_latency_s": 2.889
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 3.177,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 161.15,
+          "per_request_tokens_per_s_mean": 80.59,
+          "mean_latency_s": 3.177
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 4.859,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 210.72,
+          "per_request_tokens_per_s_mean": 52.92,
+          "mean_latency_s": 4.838
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 8.179,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 250.41,
+          "per_request_tokens_per_s_mean": 31.39,
+          "mean_latency_s": 8.154
+        }
+      ],
+      "single_stream_tokens_per_s": 88.6,
+      "peak_aggregate_tokens_per_s": 250.41,
+      "peak_aggregate_at_concurrency": 8
+    },
+    "cache_deleted": true
+  }
+}

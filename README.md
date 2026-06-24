@@ -35,8 +35,14 @@ For each model the runner does **download → serve → measure → delete**:
 6. The model is deleted from the HF cache before the next one (disk is tight —
    only models downloaded by this run are deleted; pre-existing cache is kept).
 
-Results are flushed incrementally, so an interrupted run keeps partial data and
-can be resumed with `--only`.
+### Output: one JSON per model
+
+Each model writes a **self-contained file** to `results/models/<repo>.json`
+(`{repo, machine, config, measured_at, result}`), overwritten on re-run — so
+`--only <model>` updates just that model's file. A combined `run_<ts>.json`
+snapshot and `latest.json` are also written. `--rank` aggregates the per-model
+directory by default. Results are flushed incrementally, so an interrupted run
+keeps partial data and can be resumed with `--only`.
 
 ## Backends
 
@@ -95,7 +101,10 @@ src/mlx_bench/
   schema_test.py  # JSON-schema-following suite
   runner.py       # orchestration, liveness probe, disk-safe cleanup
   cli.py          # entry point + ranking
-results/          # output JSON (run_*_complete.json, latest.json, ...)
+results/
+  models/         # one self-contained JSON per model (primary output)
+  run_*.json      # combined per-run snapshots
+  latest.json     # latest combined run
 ```
 
 ## Notes / future work
