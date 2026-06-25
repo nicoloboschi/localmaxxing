@@ -1,5 +1,5 @@
 {
-  "repo": "mlx-community/gemma-4-12B-it-4bit",
+  "repo": "mlx-community/gemma-4-26b-a4b-it-4bit",
   "machine": {
     "chip": "Apple M3 Max",
     "ram_gb": 36,
@@ -15,18 +15,18 @@
     "max_tokens": 256,
     "port": 8080
   },
-  "measured_at": "2026-06-24 17:24:38",
+  "measured_at": "2026-06-25 12:09:19",
   "result": {
-    "repo": "mlx-community/gemma-4-12B-it-4bit",
-    "family": "Gemma-4",
-    "params_b": 12.0,
-    "size_gb": 6.8,
-    "downloads_30d": 38258,
+    "repo": "mlx-community/gemma-4-26b-a4b-it-4bit",
+    "family": "Gemma-4-MoE",
+    "params_b": 26.0,
+    "size_gb": 15.6,
+    "downloads_30d": 33371,
     "batch_safe": false,
     "backend": "vlm",
     "status": "ok",
-    "download_s": 0.5,
-    "load_s": 8.3,
+    "download_s": 5188.5,
+    "load_s": 14.7,
     "prefill": {
       "sizes": [
         {
@@ -34,43 +34,43 @@
           "ok": true,
           "error": null,
           "prompt_tokens": 140,
-          "ttft_s": 0.6186,
-          "prefill_tokens_per_s": 226.3
+          "ttft_s": 0.3215,
+          "prefill_tokens_per_s": 435.4
         },
         {
           "target_tokens": 500,
           "ok": true,
           "error": null,
           "prompt_tokens": 530,
-          "ttft_s": 1.7556,
-          "prefill_tokens_per_s": 301.9
+          "ttft_s": 0.7956,
+          "prefill_tokens_per_s": 666.2
         },
         {
           "target_tokens": 1000,
           "ok": true,
           "error": null,
           "prompt_tokens": 1019,
-          "ttft_s": 3.2027,
-          "prefill_tokens_per_s": 318.2
+          "ttft_s": 1.2971,
+          "prefill_tokens_per_s": 785.6
         },
         {
           "target_tokens": 5000,
           "ok": true,
           "error": null,
           "prompt_tokens": 4925,
-          "ttft_s": 15.2335,
-          "prefill_tokens_per_s": 323.3
+          "ttft_s": 5.4861,
+          "prefill_tokens_per_s": 897.7
         },
         {
           "target_tokens": 10000,
           "ok": true,
           "error": null,
           "prompt_tokens": 9807,
-          "ttft_s": 32.1322,
-          "prefill_tokens_per_s": 305.2
+          "ttft_s": 11.41,
+          "prefill_tokens_per_s": 859.5
         }
       ],
-      "max_prefill_tokens_per_s": 323.3
+      "max_prefill_tokens_per_s": 897.7
     },
     "schema": {
       "num_tasks": 5,
@@ -91,7 +91,7 @@
           "parse_ok": true,
           "schema_ok": true,
           "error": null,
-          "raw": "{\"sentiment\": \"mixed\", \"confidence\": 0.95}"
+          "raw": "{\n  \"sentiment\": \"mixed\",\n  \"confidence\": 1.0\n}"
         },
         {
           "task": "product_list",
@@ -112,7 +112,7 @@
           "parse_ok": true,
           "schema_ok": true,
           "error": null,
-          "raw": "{\n  \"ticket_id\": 4471,\n  \"urgent\": true,\n  \"affected_users\": 1500,\n  \"summary\": \"Users cannot log in following an update.\"\n}"
+          "raw": "{\n  \"ticket_id\": 4471,\n  \"urgent\": true,\n  \"affected_users\": 1500,\n  \"summary\": \"User cannot log in after the update.\"\n}"
         }
       ]
     },
@@ -121,40 +121,41 @@
       "levels": [
         {
           "concurrency": 1,
-          "wall_time_s": 14.424,
+          "wall_time_s": 4.336,
           "total_completion_tokens": 256,
-          "aggregate_tokens_per_s": 17.75,
-          "per_request_tokens_per_s_mean": 17.75,
-          "mean_latency_s": 14.42
+          "aggregate_tokens_per_s": 59.05,
+          "per_request_tokens_per_s_mean": 59.06,
+          "mean_latency_s": 4.335
         },
         {
           "concurrency": 2,
-          "wall_time_s": 18.674,
+          "wall_time_s": 5.14,
           "total_completion_tokens": 512,
-          "aggregate_tokens_per_s": 27.42,
-          "per_request_tokens_per_s_mean": 13.72,
-          "mean_latency_s": 18.665
+          "aggregate_tokens_per_s": 99.6,
+          "per_request_tokens_per_s_mean": 49.96,
+          "mean_latency_s": 5.124
         },
         {
           "concurrency": 4,
-          "wall_time_s": 44.493,
+          "wall_time_s": 7.619,
           "total_completion_tokens": 1024,
-          "aggregate_tokens_per_s": 23.01,
-          "per_request_tokens_per_s_mean": 5.77,
-          "mean_latency_s": 44.366
+          "aggregate_tokens_per_s": 134.41,
+          "per_request_tokens_per_s_mean": 33.6,
+          "mean_latency_s": 7.618
         },
         {
           "concurrency": 8,
-          "wall_time_s": 82.183,
+          "wall_time_s": 12.212,
           "total_completion_tokens": 2048,
-          "aggregate_tokens_per_s": 24.92,
-          "per_request_tokens_per_s_mean": 3.12,
-          "mean_latency_s": 82.1
+          "aggregate_tokens_per_s": 167.7,
+          "per_request_tokens_per_s_mean": 21.01,
+          "mean_latency_s": 12.184
         }
       ],
-      "single_stream_tokens_per_s": 17.75,
-      "peak_aggregate_tokens_per_s": 27.42,
-      "peak_aggregate_at_concurrency": 2
-    }
+      "single_stream_tokens_per_s": 59.05,
+      "peak_aggregate_tokens_per_s": 167.7,
+      "peak_aggregate_at_concurrency": 8
+    },
+    "cache_deleted": true
   }
 }
