@@ -155,6 +155,27 @@
       "peak_aggregate_tokens_per_s": 51.92,
       "peak_aggregate_at_concurrency": 4
     },
-    "cache_deleted": true
-  }
+    "cache_deleted": true,
+    "quality": {
+      "limit": 40,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 1115.4,
+      "ifeval": {
+        "samples": 40,
+        "prompt_level_strict_acc": 0.825,
+        "prompt_level_loose_acc": 0.8,
+        "inst_level_strict_acc": 0.8571428571428571,
+        "inst_level_loose_acc": 0.8412698412698413
+      },
+      "gsm8k": {
+        "samples": 40,
+        "exact_match_strict": 0.85,
+        "exact_match_flexible": 0.875
+      }
+    }
+  },
+  "quality_measured_at": "2026-06-25 21:23:48"
 }

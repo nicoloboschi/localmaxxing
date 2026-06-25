@@ -56,6 +56,31 @@ git build). The **e2b / e4b** MatFormer variants currently **fail to load**
 | Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 96 | 142 | 152 | 152 | 121 |
 | gemma-3-27b-it-qat-4bit | 119 | 141 | 148 | 141 | 97 |
 
+### Quality — IFEval + GSM8K (lm-eval, direct-answer mode, 40 items/task)
+
+Graded on the actual 4-bit artifacts. **Direct-answer (non-thinking) mode**, so
+reasoning models are not shown at their thinking-mode ceiling (see note below).
+
+| Model | Params | GSM8K | IFEval prompt-strict | IFEval inst-loose |
+|---|--:|--:|--:|--:|
+| phi-4-4bit | 14.7B | 0.90 | 0.53 | 0.73 |
+| gemma-3-12b-it-qat-4bit | 12.0B | 0.88 | 0.82 | 0.84 |
+| gemma-3-27b-it-qat-4bit | 27.0B | 0.88 | 0.85 | 0.86 |
+| gemma-4-26b-a4b-it-4bit | 26.0B | 0.80 | 0.85 | 0.90 |
+| Qwen3.5-4B-4bit | 4.0B | 0.78 | 0.80 | 0.86 |
+| Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | 0.75 | 0.65 | 0.71 |
+| Qwen3.5-9B-4bit | 9.0B | 0.75 | 0.78 | 0.87 |
+| gemma-4-12B-it-4bit | 12.0B | 0.75 | 0.82 | 0.86 |
+| gemma-3-4b-it-qat-4bit | 4.3B | 0.72 | 0.65 | 0.79 |
+| Phi-4-mini-instruct-4bit | 3.8B | 0.65 | 0.50 | 0.70 |
+| Qwen3.5-2B-4bit | 2.0B | 0.50 | 0.57 | 0.73 |
+| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | 0.05 ⚠️ | 0.47 | 0.60 |
+
+GSM8K = exact-match (flexible-extract). ⚠️ The Claude-Opus *distill* collapses in
+direct-answer mode (0.05) — its template appears to ignore `enable_thinking:false`,
+so its answer stays in a chain-of-thought lm-eval doesn't capture; it's a
+reasoning-tuned model that needs its think mode.
+
 **Takeaways:** Qwen3.5-2B is the throughput leader (decode + prefill) and the
 only model below 5/5 on schema (its `<think>` trace occasionally eats the token
 budget). Phi-4-mini and gemma-3-4b are the best 4B-class all-rounders. The
@@ -65,6 +90,13 @@ Dense gemma-4-12B works via mlx-vlm but is slower than gemma-3-12b. Decode scale
 ~3–4× with concurrency on small models; the dense 24–27B models are
 single-stream-bound (~6–9 tok/s) on this hardware. All models that run follow the
 JSON schema 5/5 except the 2B.
+
+On **quality**, the standouts are **gemma-3-12b/27b** (best balance: GSM8K ~0.88,
+IFEval ~0.82–0.85) and **phi-4** (best GSM8K at 0.90, but weak instruction-
+following at 0.53). **Qwen3.5-4B punches far above its weight** (0.78 GSM8K /
+0.80 IFEval at 4B). Note these are *direct-answer* numbers — the Qwen3.5 reasoning
+models would score higher with thinking enabled, which the current harness can't
+capture cleanly (lm-eval reads the response `content`, not the `reasoning` field).
 
 ## How it works
 

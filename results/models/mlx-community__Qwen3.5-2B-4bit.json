@@ -157,24 +157,25 @@
       "peak_aggregate_at_concurrency": 4
     },
     "quality": {
-      "limit": 10,
+      "limit": 40,
       "tasks": [
         "ifeval",
         "gsm8k"
       ],
-      "elapsed_s": 88.2,
+      "elapsed_s": 178.7,
       "ifeval": {
-        "samples": 10,
-        "prompt_level_strict_acc": 0.5,
-        "prompt_level_loose_acc": 0.5,
-        "inst_level_strict_acc": 0.6111111111111112,
-        "inst_level_loose_acc": 0.6111111111111112
+        "samples": 40,
+        "prompt_level_strict_acc": 0.575,
+        "prompt_level_loose_acc": 0.625,
+        "inst_level_strict_acc": 0.6825396825396826,
+        "inst_level_loose_acc": 0.7301587301587301
       },
       "gsm8k": {
-        "samples": 10,
-        "exact_match_strict": 0.3,
-        "exact_match_flexible": 0.4
+        "samples": 40,
+        "exact_match_strict": 0.475,
+        "exact_match_flexible": 0.5
       }
     }
-  }
+  },
+  "quality_measured_at": "2026-06-25 23:50:06"
 }

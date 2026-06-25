@@ -155,7 +155,27 @@
         "peak_aggregate_tokens_per_s": 20.0,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 2193.5,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.65,
+          "prompt_level_loose_acc": 0.65,
+          "inst_level_strict_acc": 0.6984126984126984,
+          "inst_level_loose_acc": 0.7142857142857143
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.3,
+          "exact_match_flexible": 0.75
+        }
+      }
     },
     {
       "repo": "mlx-community/Phi-4-mini-instruct-4bit",
@@ -296,7 +316,27 @@
         "peak_aggregate_tokens_per_s": 207.89,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 527.6,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.5,
+          "prompt_level_loose_acc": 0.575,
+          "inst_level_strict_acc": 0.6507936507936508,
+          "inst_level_loose_acc": 0.6984126984126984
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.675,
+          "exact_match_flexible": 0.65
+        }
+      }
     },
     {
       "repo": "mlx-community/Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit",
@@ -437,7 +477,27 @@
         "peak_aggregate_tokens_per_s": 20.72,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 3449.9,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.475,
+          "prompt_level_loose_acc": 0.5,
+          "inst_level_strict_acc": 0.6190476190476191,
+          "inst_level_loose_acc": 0.6031746031746031
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.025,
+          "exact_match_flexible": 0.05
+        }
+      }
     },
     {
       "repo": "mlx-community/Qwen3.5-2B-4bit",
@@ -580,23 +640,23 @@
         "peak_aggregate_at_concurrency": 4
       },
       "quality": {
-        "limit": 10,
+        "limit": 40,
         "tasks": [
           "ifeval",
           "gsm8k"
         ],
-        "elapsed_s": 88.2,
+        "elapsed_s": 178.7,
         "ifeval": {
-          "samples": 10,
-          "prompt_level_strict_acc": 0.5,
-          "prompt_level_loose_acc": 0.5,
-          "inst_level_strict_acc": 0.6111111111111112,
-          "inst_level_loose_acc": 0.6111111111111112
+          "samples": 40,
+          "prompt_level_strict_acc": 0.575,
+          "prompt_level_loose_acc": 0.625,
+          "inst_level_strict_acc": 0.6825396825396826,
+          "inst_level_loose_acc": 0.7301587301587301
         },
         "gsm8k": {
-          "samples": 10,
-          "exact_match_strict": 0.3,
-          "exact_match_flexible": 0.4
+          "samples": 40,
+          "exact_match_strict": 0.475,
+          "exact_match_flexible": 0.5
         }
       }
     },
@@ -739,7 +799,27 @@
         "peak_aggregate_tokens_per_s": 149.25,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 283.7,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.8,
+          "prompt_level_loose_acc": 0.775,
+          "inst_level_strict_acc": 0.873015873015873,
+          "inst_level_loose_acc": 0.8571428571428571
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.775,
+          "exact_match_flexible": 0.775
+        }
+      }
     },
     {
       "repo": "mlx-community/Qwen3.5-9B-4bit",
@@ -879,6 +959,26 @@
         "single_stream_tokens_per_s": 27.8,
         "peak_aggregate_tokens_per_s": 72.51,
         "peak_aggregate_at_concurrency": 8
+      },
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 581.9,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.775,
+          "prompt_level_loose_acc": 0.825,
+          "inst_level_strict_acc": 0.8412698412698413,
+          "inst_level_loose_acc": 0.873015873015873
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.725,
+          "exact_match_flexible": 0.75
+        }
       }
     },
     {
@@ -1020,7 +1120,27 @@
         "peak_aggregate_tokens_per_s": 51.92,
         "peak_aggregate_at_concurrency": 4
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 1115.4,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.825,
+          "prompt_level_loose_acc": 0.8,
+          "inst_level_strict_acc": 0.8571428571428571,
+          "inst_level_loose_acc": 0.8412698412698413
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.85,
+          "exact_match_flexible": 0.875
+        }
+      }
     },
     {
       "repo": "mlx-community/gemma-3-27b-it-qat-4bit",
@@ -1161,7 +1281,27 @@
         "peak_aggregate_tokens_per_s": 20.23,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 2464.3,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.85,
+          "prompt_level_loose_acc": 0.825,
+          "inst_level_strict_acc": 0.873015873015873,
+          "inst_level_loose_acc": 0.8571428571428571
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.875,
+          "exact_match_flexible": 0.875
+        }
+      }
     },
     {
       "repo": "mlx-community/gemma-3-4b-it-qat-4bit",
@@ -1302,7 +1442,27 @@
         "peak_aggregate_tokens_per_s": 197.17,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 368.9,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.65,
+          "prompt_level_loose_acc": 0.725,
+          "inst_level_strict_acc": 0.7301587301587301,
+          "inst_level_loose_acc": 0.7936507936507936
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.725,
+          "exact_match_flexible": 0.725
+        }
+      }
     },
     {
       "repo": "mlx-community/gemma-4-12B-it-4bit",
@@ -1443,6 +1603,26 @@
         "single_stream_tokens_per_s": 17.75,
         "peak_aggregate_tokens_per_s": 27.42,
         "peak_aggregate_at_concurrency": 2
+      },
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 627.4,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.825,
+          "prompt_level_loose_acc": 0.825,
+          "inst_level_strict_acc": 0.8571428571428571,
+          "inst_level_loose_acc": 0.8571428571428571
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.675,
+          "exact_match_flexible": 0.75
+        }
       }
     },
     {
@@ -1585,7 +1765,27 @@
         "peak_aggregate_tokens_per_s": 167.7,
         "peak_aggregate_at_concurrency": 8
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 305.7,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.85,
+          "prompt_level_loose_acc": 0.875,
+          "inst_level_strict_acc": 0.8888888888888888,
+          "inst_level_loose_acc": 0.9047619047619048
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.775,
+          "exact_match_flexible": 0.8
+        }
+      }
     },
     {
       "repo": "mlx-community/gemma-4-e2b-it-4bit",
@@ -1751,7 +1951,27 @@
         "peak_aggregate_tokens_per_s": 37.81,
         "peak_aggregate_at_concurrency": 4
       },
-      "cache_deleted": true
+      "cache_deleted": true,
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 1056.9,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.525,
+          "prompt_level_loose_acc": 0.625,
+          "inst_level_strict_acc": 0.6666666666666666,
+          "inst_level_loose_acc": 0.7301587301587301
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.9,
+          "exact_match_flexible": 0.9
+        }
+      }
     }
   ]
 }

@@ -155,6 +155,27 @@
       "single_stream_tokens_per_s": 17.75,
       "peak_aggregate_tokens_per_s": 27.42,
       "peak_aggregate_at_concurrency": 2
+    },
+    "quality": {
+      "limit": 40,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 627.4,
+      "ifeval": {
+        "samples": 40,
+        "prompt_level_strict_acc": 0.825,
+        "prompt_level_loose_acc": 0.825,
+        "inst_level_strict_acc": 0.8571428571428571,
+        "inst_level_loose_acc": 0.8571428571428571
+      },
+      "gsm8k": {
+        "samples": 40,
+        "exact_match_strict": 0.675,
+        "exact_match_flexible": 0.75
+      }
     }
-  }
+  },
+  "quality_measured_at": "2026-06-25 22:49:44"
 }
