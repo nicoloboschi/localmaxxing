@@ -7,6 +7,8 @@ rank them on:
 2. **Prefill speed** — time-to-first-token / prompt-processing throughput across
    **input sizes of ~100 / 500 / 1k / 5k / 10k tokens**.
 3. **Features** — **JSON-schema following** (native, no constrained decoding).
+4. **Quality** (opt-in) — **IFEval + GSM8K** via lm-evaluation-harness, graded on
+   the actual 4-bit artifact (not a full-precision reference).
 
 Built for an Apple M3 Max (36 GB). Results are written to `results/*.json`.
 
@@ -116,10 +118,27 @@ uv run mlx-bench                 # run the default sweep (writes results/run_<ts
 uv run mlx-bench --rank          # print rankings from the latest results
 uv run mlx-bench --rank --results results/run_XXXX.json
 uv run mlx-bench --only Qwen3.5-9B gemma-3-12b   # run specific models (substring match)
+uv run mlx-bench --only Qwen3.5-9B --quality --quality-limit 40   # add IFEval+GSM8K
 ```
 
 Options: `--levels 1 2 4 8`, `--max-tokens 256`, `--port 8080`,
-`--only <substr> ...`.
+`--only <substr> ...`, `--quality`, `--quality-limit N`.
+
+### Quality suite (`--quality`)
+
+Runs real **IFEval** and **GSM8K** through `lm-evaluation-harness` pointed at the
+running MLX server, so the *4-bit artifact* is graded with the standard graders.
+Opt-in because it's **much slower** than the other suites (GSM8K generates a full
+chain of thought per item): roughly **1.5 min/model at `--quality-limit 10`** on
+a 2B and proportionally more for larger models / higher limits — budget hours for
+the full roster.
+
+It runs in **direct-answer mode** (`enable_thinking: false`): reasoning models
+(Qwen3.5) otherwise return their answer in the response `reasoning` field, which
+lm-eval doesn't read. So quality numbers reflect *non-thinking* performance,
+consistent across all models (the flag is a no-op for non-reasoning models).
+Reported metrics: GSM8K exact-match (strict + flexible) and IFEval
+prompt/instruction-level strict + loose accuracy.
 
 ## Models (modern roster, ≤27B, 4-bit MLX)
 
@@ -153,6 +172,7 @@ src/mlx_bench/
   speed.py        # concurrency throughput suite
   prefill.py      # prefill / TTFT-by-input-size suite
   schema_test.py  # JSON-schema-following suite
+  quality.py      # IFEval + GSM8K via lm-evaluation-harness (opt-in)
   runner.py       # orchestration, liveness probe, disk-safe cleanup
   cli.py          # entry point + ranking
 results/

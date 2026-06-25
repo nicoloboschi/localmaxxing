@@ -15,7 +15,7 @@
     "max_tokens": 256,
     "port": 8080
   },
-  "measured_at": "2026-06-24 14:51:27",
+  "measured_at": "2026-06-25 17:42:44",
   "result": {
     "repo": "mlx-community/Qwen3.5-2B-4bit",
     "family": "Qwen3.5",
@@ -25,8 +25,8 @@
     "batch_safe": true,
     "backend": "lm",
     "status": "ok",
-    "download_s": 159.7,
-    "load_s": 5.4,
+    "download_s": 0.2,
+    "load_s": 2.4,
     "prefill": {
       "sizes": [
         {
@@ -34,43 +34,43 @@
           "ok": true,
           "error": null,
           "prompt_tokens": 139,
-          "ttft_s": 0.2174,
-          "prefill_tokens_per_s": 639.3
+          "ttft_s": 0.271,
+          "prefill_tokens_per_s": 512.9
         },
         {
           "target_tokens": 500,
           "ok": true,
           "error": null,
           "prompt_tokens": 540,
-          "ttft_s": 0.3798,
-          "prefill_tokens_per_s": 1421.7
+          "ttft_s": 0.426,
+          "prefill_tokens_per_s": 1267.5
         },
         {
           "target_tokens": 1000,
           "ok": true,
           "error": null,
           "prompt_tokens": 1043,
-          "ttft_s": 0.5834,
-          "prefill_tokens_per_s": 1787.9
+          "ttft_s": 0.7423,
+          "prefill_tokens_per_s": 1405.1
         },
         {
           "target_tokens": 5000,
           "ok": true,
           "error": null,
           "prompt_tokens": 5054,
-          "ttft_s": 2.5598,
-          "prefill_tokens_per_s": 1974.4
+          "ttft_s": 2.6764,
+          "prefill_tokens_per_s": 1888.4
         },
         {
           "target_tokens": 10000,
           "ok": true,
           "error": null,
           "prompt_tokens": 10069,
-          "ttft_s": 4.4299,
-          "prefill_tokens_per_s": 2272.9
+          "ttft_s": 5.4931,
+          "prefill_tokens_per_s": 1833.0
         }
       ],
-      "max_prefill_tokens_per_s": 2272.9
+      "max_prefill_tokens_per_s": 1888.4
     },
     "schema": {
       "num_tasks": 5,
@@ -121,41 +121,60 @@
       "levels": [
         {
           "concurrency": 1,
-          "wall_time_s": 2.889,
+          "wall_time_s": 3.037,
           "total_completion_tokens": 256,
-          "aggregate_tokens_per_s": 88.6,
-          "per_request_tokens_per_s_mean": 88.61,
-          "mean_latency_s": 2.889
+          "aggregate_tokens_per_s": 84.29,
+          "per_request_tokens_per_s_mean": 84.29,
+          "mean_latency_s": 3.037
         },
         {
           "concurrency": 2,
-          "wall_time_s": 3.177,
+          "wall_time_s": 3.567,
           "total_completion_tokens": 512,
-          "aggregate_tokens_per_s": 161.15,
-          "per_request_tokens_per_s_mean": 80.59,
-          "mean_latency_s": 3.177
+          "aggregate_tokens_per_s": 143.56,
+          "per_request_tokens_per_s_mean": 71.79,
+          "mean_latency_s": 3.566
         },
         {
           "concurrency": 4,
-          "wall_time_s": 4.859,
+          "wall_time_s": 4.674,
           "total_completion_tokens": 1024,
-          "aggregate_tokens_per_s": 210.72,
-          "per_request_tokens_per_s_mean": 52.92,
-          "mean_latency_s": 4.838
+          "aggregate_tokens_per_s": 219.1,
+          "per_request_tokens_per_s_mean": 54.85,
+          "mean_latency_s": 4.667
         },
         {
           "concurrency": 8,
-          "wall_time_s": 8.179,
+          "wall_time_s": 10.062,
           "total_completion_tokens": 2048,
-          "aggregate_tokens_per_s": 250.41,
-          "per_request_tokens_per_s_mean": 31.39,
-          "mean_latency_s": 8.154
+          "aggregate_tokens_per_s": 203.55,
+          "per_request_tokens_per_s_mean": 25.54,
+          "mean_latency_s": 10.023
         }
       ],
-      "single_stream_tokens_per_s": 88.6,
-      "peak_aggregate_tokens_per_s": 250.41,
-      "peak_aggregate_at_concurrency": 8
+      "single_stream_tokens_per_s": 84.29,
+      "peak_aggregate_tokens_per_s": 219.1,
+      "peak_aggregate_at_concurrency": 4
     },
-    "cache_deleted": true
+    "quality": {
+      "limit": 10,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 88.2,
+      "ifeval": {
+        "samples": 10,
+        "prompt_level_strict_acc": 0.5,
+        "prompt_level_loose_acc": 0.5,
+        "inst_level_strict_acc": 0.6111111111111112,
+        "inst_level_loose_acc": 0.6111111111111112
+      },
+      "gsm8k": {
+        "samples": 10,
+        "exact_match_strict": 0.3,
+        "exact_match_flexible": 0.4
+      }
+    }
   }
 }

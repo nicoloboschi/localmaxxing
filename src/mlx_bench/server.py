@@ -16,11 +16,16 @@ import urllib.request
 
 class MLXServer:
     def __init__(self, repo: str, port: int = 8080, max_concurrency: int = 8,
-                 log_path: str | None = None, backend: str = "lm"):
+                 log_path: str | None = None, backend: str = "lm",
+                 chat_template_args: str | None = None):
         self.repo = repo
         self.port = port
         self.max_concurrency = max_concurrency
         self.log_path = log_path
+        # JSON string passed to mlx_lm.server --chat-template-args, e.g.
+        # '{"enable_thinking": false}' to force direct-answer mode (needed so
+        # reasoning models put the answer in message.content, which graders read).
+        self.chat_template_args = chat_template_args
         # backend: "lm" -> mlx_lm.server (continuous batching);
         #          "vlm" -> mlx_vlm.server (for multimodal archs like gemma-4;
         #                   no continuous batching, requests serialize).
@@ -50,6 +55,8 @@ class MLXServer:
                 "--prompt-concurrency", str(self.max_concurrency),
                 "--log-level", "WARNING",
             ]
+            if self.chat_template_args:
+                cmd += ["--chat-template-args", self.chat_template_args]
         self._log_fh = open(self.log_path, "w") if self.log_path else subprocess.DEVNULL
         self.proc = subprocess.Popen(
             cmd, stdout=self._log_fh, stderr=subprocess.STDOUT,

@@ -37,7 +37,8 @@ def _now() -> str:
 
 
 def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
-        levels=(1, 2, 4, 8), log_dir: Path | None = None, only=None):
+        levels=(1, 2, 4, 8), log_dir: Path | None = None, only=None,
+        quality: bool = False, quality_limit: int = 40):
     log_dir = log_dir or results_path.parent / "server_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     models_dir = results_path.parent / "models"
@@ -159,6 +160,22 @@ def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
                   f"peak={s.get('peak_aggregate_tokens_per_s')} tok/s @c{s.get('peak_aggregate_at_concurrency')}  "
                   f"prefill={pf.get('max_prefill_tokens_per_s')} tok/s  "
                   f"schema={sc.get('schema_follow_rate')}", flush=True)
+
+            # 6. Quality suite (opt-in, slow): real IFEval + GSM8K via lm-eval.
+            #    Needs the main server down first (avoid two models in memory),
+            #    and runs in direct-answer mode on its own server.
+            if quality:
+                print("  quality (ifeval+gsm8k)...", flush=True)
+                server.stop()
+                from .quality import run_quality_suite
+                q_log = str(log_dir / (m.repo.replace("/", "__") + ".quality.log"))
+                entry["quality"] = run_quality_suite(
+                    m.repo, backend=m.backend, port=port + 1,
+                    limit=quality_limit, log_path=q_log)
+                q = entry["quality"]
+                print(f"    quality {q.get('elapsed_s')}s  "
+                      f"ifeval(prompt-strict)={q.get('ifeval',{}).get('prompt_level_strict_acc')}  "
+                      f"gsm8k={q.get('gsm8k',{}).get('exact_match_flexible')}", flush=True)
         except Exception as e:  # noqa: BLE001 - never let one model abort the run
             entry["status"] = "error"
             entry["error"] = f"{type(e).__name__}: {e}"

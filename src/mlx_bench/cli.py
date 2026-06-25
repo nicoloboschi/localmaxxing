@@ -70,6 +70,21 @@ def _print_ranking(report: dict, label: str):
         sc = m["schema"]
         print(f"  {sc['schema_follow_rate']:5.2f}  ({sc['schema_ok']}/{sc['num_tasks']})  {m['repo']}")
 
+    def _q(m, task, key):
+        q = m.get("quality")
+        return q.get(task, {}).get(key) if isinstance(q, dict) else None
+
+    have_q = [m for m in ok if _q(m, "gsm8k", "exact_match_flexible") is not None
+              or _q(m, "ifeval", "prompt_level_strict_acc") is not None]
+    if have_q:
+        print("\n=== Quality: GSM8K (acc) | IFEval prompt-strict (direct-answer mode) ===")
+        for m in sorted(have_q, key=lambda x: (_q(x, "gsm8k", "exact_match_flexible") or 0), reverse=True):
+            g = _q(m, "gsm8k", "exact_match_flexible")
+            i = _q(m, "ifeval", "prompt_level_strict_acc")
+            gs = f"{g:.2f}" if g is not None else "  — "
+            is_ = f"{i:.2f}" if i is not None else "  — "
+            print(f"  gsm8k={gs}  ifeval={is_}  {m['repo']}")
+
 
 def main():
     ap = argparse.ArgumentParser(description="Benchmark OSS LLMs on the MLX backend.")
@@ -83,6 +98,10 @@ def main():
     ap.add_argument("--levels", type=int, nargs="+", default=[1, 2, 4, 8])
     ap.add_argument("--only", type=str, nargs="+", default=None,
                     help="Only run models whose repo contains any of these substrings.")
+    ap.add_argument("--quality", action="store_true",
+                    help="Also run the quality suite (real IFEval + GSM8K via lm-eval). Slow.")
+    ap.add_argument("--quality-limit", type=int, default=40,
+                    help="Number of items per quality task (default 40).")
     args = ap.parse_args()
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
@@ -108,7 +127,8 @@ def main():
     latest = RESULTS_DIR / "latest.json"
     print(f"Writing per-model results to {RESULTS_DIR / 'models'}/  (combined: {results_path})")
     report = run(results_path, port=args.port, max_tokens=args.max_tokens,
-                 levels=tuple(args.levels), only=args.only)
+                 levels=tuple(args.levels), only=args.only,
+                 quality=args.quality, quality_limit=args.quality_limit)
     latest.write_text(json.dumps(report, indent=2))
     print(f"\nDone. {results_path}")
     _print_ranking(report, results_path.name)
