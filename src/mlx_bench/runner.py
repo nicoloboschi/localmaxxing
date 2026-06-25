@@ -38,7 +38,7 @@ def _now() -> str:
 
 def run(results_path: Path, port: int = 8080, max_tokens: int = 256,
         levels=(1, 2, 4, 8), log_dir: Path | None = None, only=None,
-        quality: bool = False, quality_limit: int = 40):
+        quality: bool = True, quality_limit: int = 40):
     log_dir = log_dir or results_path.parent / "server_logs"
     log_dir.mkdir(parents=True, exist_ok=True)
     models_dir = results_path.parent / "models"

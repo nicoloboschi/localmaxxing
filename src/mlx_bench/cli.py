@@ -98,10 +98,12 @@ def main():
     ap.add_argument("--levels", type=int, nargs="+", default=[1, 2, 4, 8])
     ap.add_argument("--only", type=str, nargs="+", default=None,
                     help="Only run models whose repo contains any of these substrings.")
-    ap.add_argument("--quality", action="store_true",
-                    help="Also run the quality suite (real IFEval + GSM8K via lm-eval). Slow.")
+    ap.add_argument("--quality", action=argparse.BooleanOptionalAction, default=True,
+                    help="Run the quality suite (real IFEval + GSM8K via lm-eval). "
+                         "On by default; use --no-quality to skip (it's slow).")
     ap.add_argument("--quality-limit", type=int, default=40,
-                    help="Number of items per quality task (default 40).")
+                    help="Items per quality task (default 40 = '20 x2'; greedy decoding "
+                         "is deterministic so more items, not repeats, reduces variance).")
     args = ap.parse_args()
 
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
