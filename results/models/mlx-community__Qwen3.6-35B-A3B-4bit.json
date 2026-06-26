@@ -1,0 +1,181 @@
+{
+  "repo": "mlx-community/Qwen3.6-35B-A3B-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-06-26 22:23:51",
+  "result": {
+    "repo": "mlx-community/Qwen3.6-35B-A3B-4bit",
+    "family": "Qwen3.6-MoE",
+    "params_b": 35.0,
+    "size_gb": 20.4,
+    "downloads_30d": 78196,
+    "batch_safe": true,
+    "backend": "lm",
+    "status": "ok",
+    "download_s": 1715.4,
+    "load_s": 11.7,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 139,
+          "ttft_s": 0.4022,
+          "prefill_tokens_per_s": 345.6
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 540,
+          "ttft_s": 0.7739,
+          "prefill_tokens_per_s": 697.7
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1043,
+          "ttft_s": 1.1353,
+          "prefill_tokens_per_s": 918.7
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5054,
+          "ttft_s": 4.6283,
+          "prefill_tokens_per_s": 1092.0
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10069,
+          "ttft_s": 9.2631,
+          "prefill_tokens_per_s": 1087.0
+        }
+      ],
+      "max_prefill_tokens_per_s": 1092.0
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 5,
+      "schema_ok": 5,
+      "parse_rate": 1.0,
+      "schema_follow_rate": 1.0,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"name\":\"Maria Chen\",\"age\":42,\"occupation\":\"cardiologist\",\"city\":\"Boston\"}\nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Input Text:** \"Dr. Maria Chen is 42 years old and works as a cardiologist in Boston.\"\n   - **Task:** Extract person's info into a JSON object.\n   - **Constraints:** \n     - Respond with ONLY a single JSON object.\n     - No prose, no markdown fences, no explanation.\n     - Must strictly conform to the provided JSON Schema.\n   - **Schema Requirements:**\n     - `name` (string, required)\n     - `age` (integer, required)\n     - `occupation` (string, required)\n     - `city` (string, required)\n     - `additionalProperties`: false\n\n2.  **Extract Information from Text:**\n   - Name: \"Maria Chen\" (or \"Dr. Maria Chen\"? The schema says `name` is a string. I'll use \"M"
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"sentiment\":\"mixed\",\"confidence\":0.9}\nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Input Text:** \"The battery life is terrible but the screen is gorgeous.\"\n   - **Task:** Classify sentiment.\n   - **Output Format:** Strict JSON object matching a specific schema.\n   - **Constraints:** ONLY a single JSON object, no prose, no markdown fences, no explanation.\n\n2.  **Analyze Input Text for Sentiment:**\n   - \"battery life is terrible\" -> Negative\n   - \"screen is gorgeous\" -> Positive\n   - Combined: Mixed sentiment (contains both strong positive and strong negative aspects).\n\n3.  **Determine Confidence:**\n   - The text clearly expresses two opposing opinions. \"Mixed\" is the exact match for this type of review.\n   - Confidence should be high, e.g., 0.9 or 0.95. I'll use 0.9.\n\n4. "
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"products\":[{\"name\":\"AeroBook laptop\",\"price_usd\":1299},{\"name\":\"Pulse smartwatch\",\"price_usd\":199},{\"name\":\"Nimbus earbuds\",\"price_usd\":79}]}\nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Input Text:** \"We sell the AeroBook laptop ($1299), the Pulse smartwatch ($199), and the Nimbus earbuds ($79).\"\n   - **Task:** Extract products mentioned, list them with name and price_usd.\n   - **Output Format:** Strictly a single JSON object conforming to the provided JSON Schema. No prose, no markdown fences, no explanation.\n\n2.  **Extract Data from Input:**\n   - Product 1: AeroBook laptop, Price: $1299 -> name: \"AeroBook laptop\", price_usd: 1299\n   - Product 2: Pulse smartwatch, Price: $199 -> name: \"Pulse smartwatch\", price_usd: 199\n   - Product 3: Nimbus earbuds, Price: $79 -> nam"
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"title\":\"The AI Summit\",\"date\":\"2026-09-14\",\"location\":\"San Francisco\",\"speakers\":[{\"name\":\"Ada Lovelace\",\"role\":\"keynote\"},{\"name\":\"Alan Turing\",\"role\":\"workshop\"}]}\nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Event:** \"The AI Summit happens on 2026-09-14 in San Francisco. Speakers include Ada Lovelace (keynote) and Alan Turing (workshop).\"\n   - **Output Requirement:** ONLY a single JSON object, no prose, no markdown fences, no explanation.\n   - **Schema Requirements:**\n     - `title`: string\n     - `date`: string\n     - `location`: string\n     - `speakers`: array of objects with `name` (string) and `role` (enum: \"keynote\", \"workshop\", \"panel\")\n     - All fields required.\n     - `additionalProperties`: false (strict schema)\n\n2.  **Extract Data from Event Description:**"
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"ticket_id\":4471,\"urgent\":true,\"affected_users\":1500,\"summary\":\"User cannot log in after the update.\"}\nHere's a thinking process:\n\n1.  **Analyze User Input:**\n   - **Input Text:** \"User cannot log in after the update. This is urgent and affects 1500 users. Ticket #4471.\"\n   - **Task:** Summarize the support ticket into a specific JSON format.\n   - **Constraints:** Respond with ONLY a single JSON object. No prose, no markdown fences, no explanation.\n   - **Schema Requirements:**\n     - `ticket_id`: integer\n     - `urgent`: boolean\n     - `affected_users`: integer\n     - `summary`: string\n     - All fields required.\n     - No additional properties.\n\n2.  **Extract Data from Input:**\n   - `ticket_id`: 4471 (from \"Ticket #4471\")\n   - `urgent`: true (from \"This is urgent\")\n   - `affected_users`"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 6.171,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 41.49,
+          "per_request_tokens_per_s_mean": 41.49,
+          "mean_latency_s": 6.17
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 8.093,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 63.27,
+          "per_request_tokens_per_s_mean": 31.64,
+          "mean_latency_s": 8.091
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 15.019,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 68.18,
+          "per_request_tokens_per_s_mean": 17.06,
+          "mean_latency_s": 15.009
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 21.562,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 94.98,
+          "per_request_tokens_per_s_mean": 11.89,
+          "mean_latency_s": 21.525
+        }
+      ],
+      "single_stream_tokens_per_s": 41.49,
+      "peak_aggregate_tokens_per_s": 94.98,
+      "peak_aggregate_at_concurrency": 8
+    },
+    "quality": {
+      "limit": 40,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 402.0,
+      "ifeval": {
+        "samples": 40,
+        "prompt_level_strict_acc": 0.825,
+        "prompt_level_loose_acc": 0.85,
+        "inst_level_strict_acc": 0.8888888888888888,
+        "inst_level_loose_acc": 0.9047619047619048
+      },
+      "gsm8k": {
+        "samples": 40,
+        "exact_match_strict": 0.95,
+        "exact_match_flexible": 0.95
+      }
+    },
+    "cache_deleted": true
+  }
+}

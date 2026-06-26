@@ -54,6 +54,15 @@ MODELS = [
     Model("mlx-community/Mistral-Small-3.2-24B-Instruct-2506-4bit", "Mistral-Small-3.2", 24.0, 13.3, 686),
     Model("mlx-community/Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit", "Qwen3.5-Distill", 27.0, 15.2, 25284),
     Model("mlx-community/gemma-3-27b-it-qat-4bit", "Gemma-3", 27.0, 16.9, 41469),
+    # Newer popular models (2025Q4-2026Q2), added later. All on the lm backend;
+    # several post-date the mlx_lm 0.31.3 release so they may not load -- the
+    # harness records that gracefully. Qwen3.6-35B-A3B exceeds the <=27B rule
+    # (35B total, ~3B active MoE) but is included by request.
+    Model("mlx-community/Ministral-3-3B-Instruct-2512-4bit", "Ministral-3", 3.0, 2.8, 24914),
+    Model("mlx-community/LFM2.5-1.2B-Instruct-4bit", "LFM2.5", 1.2, 0.7, 17326),
+    Model("mlx-community/Devstral-Small-2-24B-Instruct-2512-4bit", "Devstral-2", 24.0, 14.1, 138278),
+    Model("mlx-community/Qwen3.6-27B-4bit", "Qwen3.6", 27.0, 16.1, 17813),
+    Model("mlx-community/Qwen3.6-35B-A3B-4bit", "Qwen3.6-MoE", 35.0, 20.4, 78196),
     # Gemma-4 (model_type gemma4_unified, multimodal) -- served via the mlx_vlm
     # backend (mlx_lm cannot load it). No continuous batching on the vlm server,
     # so batch_safe=False. These are default_run=False (run them explicitly with
