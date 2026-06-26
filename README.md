@@ -76,10 +76,12 @@ reasoning models are not shown at their thinking-mode ceiling (see note below).
 | Qwen3.5-2B-4bit | 2.0B | 0.50 | 0.57 | 0.73 |
 | Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | 0.05 ⚠️ | 0.47 | 0.60 |
 
-GSM8K = exact-match (flexible-extract). ⚠️ The Claude-Opus *distill* collapses in
-direct-answer mode (0.05) — its template appears to ignore `enable_thinking:false`,
-so its answer stays in a chain-of-thought lm-eval doesn't capture; it's a
-reasoning-tuned model that needs its think mode.
+GSM8K = exact-match (flexible-extract). ⚠️ The Claude-Opus *distill*'s 0.05 is a
+**measurement artifact, not a real failure**: it's extremely verbose (~370+
+tokens/answer) and GSM8K's default 256-token generation cap truncates it before
+it writes the final `#### <answer>` (its IFEval 0.48 and schema 5/5 confirm the
+model works). The harness now raises GSM8K's generation budget to 1024 tokens to
+avoid this; the table value predates that fix — re-run to refresh.
 
 **Takeaways:** Qwen3.5-2B is the throughput leader (decode + prefill) and the
 only model below 5/5 on schema (its `<think>` trace occasionally eats the token

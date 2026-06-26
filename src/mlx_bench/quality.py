@@ -79,9 +79,14 @@ def run_quality_suite(repo: str, backend: str = "lm", port: int = 8081,
             sys.executable, "-m", "lm_eval",
             "--model", "local-chat-completions",
             "--model_args",
+            # max_gen_toks raises the model's fallback generation length from
+            # lm-eval's default 256 -> 1024. GSM8K sets no per-task cap, so a
+            # verbose model (e.g. reasoning distills) would otherwise be
+            # truncated before writing "#### <answer>" and score ~0. IFEval keeps
+            # its own task-level 1280 cap.
             (f"base_url=http://127.0.0.1:{port}/v1/chat/completions,"
              f"model={repo},num_concurrent={num_concurrent},"
-             f"tokenized_requests=False,timeout=600"),
+             f"max_gen_toks=1024,tokenized_requests=False,timeout=600"),
             "--tasks", ",".join(TASKS),
             "--limit", str(limit),
             "--apply_chat_template",
