@@ -63,6 +63,11 @@ MODELS = [
     Model("mlx-community/Devstral-Small-2-24B-Instruct-2512-4bit", "Devstral-2", 24.0, 14.1, 138278),
     Model("mlx-community/Qwen3.6-27B-4bit", "Qwen3.6", 27.0, 16.1, 17813),
     Model("mlx-community/Qwen3.6-35B-A3B-4bit", "Qwen3.6-MoE", 35.0, 20.4, 78196),
+    # Qwythos-9B (Claude-Mythos creative distill, Qwen-based). No mlx-community
+    # 4bit exists; this is a community mxfp4 conversion -- non-standard quant, so
+    # default_run=False until a load smoke-test confirms mlx_lm can load it.
+    Model("sahilchachra/Qwythos-9B-Claude-Mythos-5-1M-mxfp4-mlx", "Qwythos", 9.0, 4.8, 4253,
+          default_run=False),
     # Gemma-4 (model_type gemma4_unified, multimodal) -- served via the mlx_vlm
     # backend (mlx_lm cannot load it). No continuous batching on the vlm server,
     # so batch_safe=False. These are default_run=False (run them explicitly with

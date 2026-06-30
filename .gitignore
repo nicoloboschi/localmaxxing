@@ -15,3 +15,6 @@ results/archive/
 
 # OS
 .DS_Store
+
+# Per-run snapshots (per-model files + latest.json are canonical)
+results/run_*.json

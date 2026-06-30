@@ -14,38 +14,54 @@ Built for an Apple M3 Max (36 GB). Results are written to `results/*.json`.
 
 ## Results
 
-Apple M3 Max (36 GB), 4-bit MLX, `max_tokens=256`, greedy decoding. Full data in
-[`results/models/`](results/models). Regenerate the ranking with
-`uv run mlx-bench --rank`.
+Apple M3 Max (36 GB), all models 4-bit MLX. **17 models** benchmarked across decode
+throughput (1/2/4/8 concurrency), prefill/TTFT by input size, JSON-schema
+following, and quality (IFEval + GSM8K, 40 items, direct-answer mode). Full data in
+[`results/models/`](results/models) (one self-contained JSON per model);
+`uv run mlx-bench --rank` reprints these tables.
 
 ### Summary
 
-| Model | Params | Backend | Decode 1× (tok/s) | Decode peak (tok/s @conc) | Prefill @1k (tok/s) | JSON-schema |
-|---|--:|:--:|--:|--:|--:|:--:|
-| Qwen3.5-2B-4bit | 2.0B | lm | 88.6 | 250 @c8 | 1788 | 4/5 (0.8) |
-| Qwen3.5-4B-4bit | 4.0B | lm | 69.9 | 149 @c8 | 825 | 5/5 (1.0) |
-| Phi-4-mini-instruct-4bit | 3.8B | lm | 67.8 | 208 @c8 | 1081 | 5/5 (1.0) |
-| gemma-3-4b-it-qat-4bit | 4.3B | lm | 63.0 | 197 @c8 | 970 | 5/5 (1.0) |
-| gemma-4-26b-a4b-it-4bit | 26.0B (MoE) | vlm | 59.0 | 168 @c8 ¹ | 786 | 5/5 (1.0) |
-| Qwen3.5-9B-4bit | 9.0B | lm | 27.8 | 73 @c8 | 345 | 5/5 (1.0) |
-| gemma-3-12b-it-qat-4bit | 12.0B | lm | 25.9 | 52 @c4 | 336 | 5/5 (1.0) |
-| phi-4-4bit | 14.7B | lm | 25.9 | 38 @c4 | 301 | 5/5 (1.0) |
-| gemma-4-12B-it-4bit | 12.0B | vlm | 17.8 | 27 @c2 ¹ | 318 | 5/5 (1.0) |
-| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | lm | 8.7 | 21 @c8 | 152 | 5/5 (1.0) |
-| gemma-3-27b-it-qat-4bit | 27.0B | lm | 7.1 | 20 @c8 | 148 | 5/5 (1.0) |
-| Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | lm | 5.7 | 20 @c8 | 183 | 5/5 (1.0) |
+| Model | Params | Backend | Decode 1× (tok/s) | Decode peak (tok/s @conc) | Prefill @1k (tok/s) | Schema | GSM8K | IFEval |
+|---|--:|:--:|--:|--:|--:|:--:|--:|--:|
+| LFM2.5-1.2B-Instruct-4bit | 1.2B | lm | 235.7 | 460 @c4 | 2342 | 1.00 | 0.55 | 0.72 |
+| Ministral-3-3B-Instruct-2512-4bit | 3.0B | lm | 93.9 | 222 @c4 | 1699 | 1.00 | 0.72 | 0.55 |
+| Qwen3.5-2B-4bit | 2.0B | lm | 84.3 | 219 @c4 | 1405 | 0.80 | 0.50 | 0.57 |
+| Qwen3.5-4B-4bit | 4.0B | lm | 69.9 | 149 @c8 | 825 | 1.00 | 0.78 | 0.80 |
+| Phi-4-mini-instruct-4bit | 3.8B | lm | 67.8 | 208 @c8 | 1081 | 1.00 | 0.65 | 0.50 |
+| gemma-3-4b-it-qat-4bit | 4.3B | lm | 63.0 | 197 @c8 | 970 | 1.00 | 0.72 | 0.65 |
+| gemma-4-26b-a4b-it-4bit | 26.0B (MoE) | vlm | 59.0 | 168 @c8 ¹ | 786 | 1.00 | 0.80 | 0.85 |
+| Qwen3.6-35B-A3B-4bit | 35.0B (MoE) | lm | 41.5 | 95 @c8 | 919 | 1.00 | 0.95 | 0.82 |
+| Qwen3.5-9B-4bit | 9.0B | lm | 27.8 | 73 @c8 | 345 | 1.00 | 0.75 | 0.78 |
+| gemma-3-12b-it-qat-4bit | 12.0B | lm | 25.9 | 52 @c4 | 336 | 1.00 | 0.88 | 0.82 |
+| phi-4-4bit | 14.7B | lm | 25.9 | 38 @c4 | 301 | 1.00 | 0.90 | 0.53 |
+| gemma-4-12B-it-4bit | 12.0B | vlm | 17.8 | 27 @c2 ¹ | 318 | 1.00 | 0.75 | 0.82 |
+| Qwen3.6-27B-4bit | 27.0B | lm | 13.5 | 25 @c8 | 156 | 1.00 | 1.00 | 0.82 |
+| Devstral-Small-2-24B-Instruct-2512-4bit | 24.0B | lm | 11.3 | 27 @c8 | 153 | 1.00 | 0.90 | 0.70 |
+| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | lm | 8.7 | 21 @c8 | 152 | 1.00 | 0.05 ⚠️ | 0.47 |
+| gemma-3-27b-it-qat-4bit | 27.0B | lm | 7.1 | 20 @c8 | 148 | 1.00 | 0.88 | 0.85 |
+| Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | lm | 5.7 | 20 @c8 | 183 | 1.00 | 0.75 | 0.65 |
 
-¹ gemma-4 runs via the **mlx-vlm** backend (separate server, needs the mlx-vlm
-git build). The **e2b / e4b** MatFormer variants currently **fail to load**
-(`Received 140 parameters not in model` — `k_eq_v` fusion mismatch).
+Schema = JSON-schema follow rate (5 tasks). GSM8K = exact-match (flexible-extract).
+IFEval = prompt-level strict accuracy. ¹ gemma-4 runs via the **mlx-vlm** backend
+(separate server). ⚠️ the Claude-Opus *distill*'s 0.05 is a measurement artifact
+(it's extremely verbose and was truncated by GSM8K's old 256-token cap before the
+final answer; its IFEval 0.47 and schema 1.0 confirm the model works — the harness
+now uses a 1024-token budget, value predates that fix).
+
+The gemma-4 **e2b / e4b** MatFormer variants are in the registry but **fail to load**
+on mlx-vlm (`Received 140 parameters not in model`), so they're excluded.
 
 ### Prefill throughput by input size (tok/s)
 
 | Model | 100t | 500t | 1000t | 5000t | 10000t |
 |---|--:|--:|--:|--:|--:|
-| Qwen3.5-2B-4bit | 639 | 1422 | 1788 | 1974 | 2273 |
+| LFM2.5-1.2B-Instruct-4bit | 2464 | 3015 | 2342 | 2805 | 2764 |
+| Ministral-3-3B-Instruct-2512-4bit | 2905 | 2010 | 1699 | 1174 | 978 |
+| Qwen3.5-2B-4bit | 513 | 1268 | 1405 | 1888 | 1833 |
 | Phi-4-mini-instruct-4bit | 521 | 950 | 1081 | 1080 | 916 |
 | gemma-3-4b-it-qat-4bit | 449 | 821 | 970 | 1048 | 1064 |
+| Qwen3.6-35B-A3B-4bit | 346 | 698 | 919 | 1092 | 1087 |
 | Qwen3.5-4B-4bit | 257 | 724 | 825 | 985 | 931 |
 | gemma-4-26b-a4b-it-4bit | 435 | 666 | 786 | 898 | 860 |
 | Qwen3.5-9B-4bit | 168 | 253 | 345 | 386 | 370 |
@@ -53,52 +69,23 @@ git build). The **e2b / e4b** MatFormer variants currently **fail to load**
 | gemma-4-12B-it-4bit | 226 | 302 | 318 | 323 | 305 |
 | phi-4-4bit | 238 | 288 | 301 | 286 | 245 |
 | Mistral-Small-3.2-24B-Instruct-2506-4bit | 129 | 170 | 183 | 173 | 143 |
+| Qwen3.6-27B-4bit | 102 | 150 | 156 | 154 | 104 |
+| Devstral-Small-2-24B-Instruct-2512-4bit | 99 | 141 | 153 | 145 | 120 |
 | Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 96 | 142 | 152 | 152 | 121 |
 | gemma-3-27b-it-qat-4bit | 119 | 141 | 148 | 141 | 97 |
 
-### Quality — IFEval + GSM8K (lm-eval, direct-answer mode, 40 items/task)
-
-Graded on the actual 4-bit artifacts. **Direct-answer (non-thinking) mode**, so
-reasoning models are not shown at their thinking-mode ceiling (see note below).
-
-| Model | Params | GSM8K | IFEval prompt-strict | IFEval inst-loose |
-|---|--:|--:|--:|--:|
-| phi-4-4bit | 14.7B | 0.90 | 0.53 | 0.73 |
-| gemma-3-12b-it-qat-4bit | 12.0B | 0.88 | 0.82 | 0.84 |
-| gemma-3-27b-it-qat-4bit | 27.0B | 0.88 | 0.85 | 0.86 |
-| gemma-4-26b-a4b-it-4bit | 26.0B | 0.80 | 0.85 | 0.90 |
-| Qwen3.5-4B-4bit | 4.0B | 0.78 | 0.80 | 0.86 |
-| Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | 0.75 | 0.65 | 0.71 |
-| Qwen3.5-9B-4bit | 9.0B | 0.75 | 0.78 | 0.87 |
-| gemma-4-12B-it-4bit | 12.0B | 0.75 | 0.82 | 0.86 |
-| gemma-3-4b-it-qat-4bit | 4.3B | 0.72 | 0.65 | 0.79 |
-| Phi-4-mini-instruct-4bit | 3.8B | 0.65 | 0.50 | 0.70 |
-| Qwen3.5-2B-4bit | 2.0B | 0.50 | 0.57 | 0.73 |
-| Qwen3.5-27B-Claude-4.6-Opus-Distilled-MLX-4bit | 27.0B | 0.05 ⚠️ | 0.47 | 0.60 |
-
-GSM8K = exact-match (flexible-extract). ⚠️ The Claude-Opus *distill*'s 0.05 is a
-**measurement artifact, not a real failure**: it's extremely verbose (~370+
-tokens/answer) and GSM8K's default 256-token generation cap truncates it before
-it writes the final `#### <answer>` (its IFEval 0.48 and schema 5/5 confirm the
-model works). The harness now raises GSM8K's generation budget to 1024 tokens to
-avoid this; the table value predates that fix — re-run to refresh.
-
-**Takeaways:** Qwen3.5-2B is the throughput leader (decode + prefill) and the
-only model below 5/5 on schema (its `<think>` trace occasionally eats the token
-budget). Phi-4-mini and gemma-3-4b are the best 4B-class all-rounders. The
-**gemma-4-26b-a4b MoE** punches well above its size — ~59 tok/s single-stream
-from a 26B model (only ~4B params active) — and is the fastest model ≥12B here.
-Dense gemma-4-12B works via mlx-vlm but is slower than gemma-3-12b. Decode scales
-~3–4× with concurrency on small models; the dense 24–27B models are
-single-stream-bound (~6–9 tok/s) on this hardware. All models that run follow the
-JSON schema 5/5 except the 2B.
-
-On **quality**, the standouts are **gemma-3-12b/27b** (best balance: GSM8K ~0.88,
-IFEval ~0.82–0.85) and **phi-4** (best GSM8K at 0.90, but weak instruction-
-following at 0.53). **Qwen3.5-4B punches far above its weight** (0.78 GSM8K /
-0.80 IFEval at 4B). Note these are *direct-answer* numbers — the Qwen3.5 reasoning
-models would score higher with thinking enabled, which the current harness can't
-capture cleanly (lm-eval reads the response `content`, not the `reasoning` field).
+**Takeaways:**
+- **Speed:** LFM2.5-1.2B (a non-transformer Liquid model) is the throughput king —
+  236 tok/s single-stream, 460 @c4, ~2.5–3k tok/s prefill. Decode scales ~3–4× with
+  concurrency on small models; dense 24–27B models are single-stream-bound (~6–13 tok/s).
+- **Quality:** **Qwen3.6-27B** tops GSM8K (perfect **1.00**) at 0.82 IFEval; the
+  **Qwen3.6-35B-A3B MoE** is the best quality-per-speed pick (0.95 GSM8K / 0.82 IFEval
+  at a fast 41 tok/s). **phi-4** and **Devstral-2-24B** also hit 0.90 GSM8K (phi-4 is a
+  weak instruction-follower though, 0.53 IFEval). **gemma-3-12b/27b** are the most
+  balanced, and **Qwen3.5-4B punches far above its weight** (0.78/0.80 at 4B).
+- **Caveat:** quality is measured in *direct-answer* (non-thinking) mode, so the Qwen3.x
+  reasoning models would score higher with thinking enabled (lm-eval reads the response
+  `content`, not the `reasoning` field).
 
 ## How it works
 
@@ -174,11 +161,12 @@ consistent across all models (the flag is a no-op for non-reasoning models).
 Reported metrics: GSM8K exact-match (strict + flexible) and IFEval
 prompt/instruction-level strict + loose accuracy.
 
-## Models (modern roster, ≤27B, 4-bit MLX)
+## Models (modern roster, mostly ≤27B, 4-bit MLX)
 
-Default sweep centers on **Qwen3.5** and **Gemma-3**, plus **Phi-4** and
-**Mistral-Small-3.2** (2025–2026 families), ordered small→large. See
-`src/mlx_bench/models.py`.
+2025–2026 families: **Qwen3.5**, **Qwen3.6** (incl. the 35B-A3B MoE — over the
+≤27B guideline but added by request), **Gemma-3**, **Gemma-4** (vlm backend),
+**Phi-4**, **Mistral-Small-3.2**, **Devstral-2**, **Ministral-3**, and the
+non-transformer **LFM2.5**. See `src/mlx_bench/models.py`.
 
 ### Gemma-4 (experimental, `--only` / `vlm` backend)
 
@@ -192,10 +180,9 @@ uv pip install -U "git+https://github.com/Blaizzy/mlx-vlm"
 uv run mlx-bench --only gemma-4-12B
 ```
 
-Status on the current stack: **`gemma-4-12B` works** (loads ~8s, valid output,
-schema 5/5). The **`e2b`/`e4b` MatFormer variants fail to load**
-(`Received 140 parameters not in model` — k_eq_v fusion mismatch). A sample
-result is in `results/gemma-4-12b-vlm-demo.json`.
+Status on the current stack: **`gemma-4-12B` and `gemma-4-26b-a4b` work** (valid
+output, schema 5/5 — see the Results tables). The **`e2b`/`e4b` MatFormer variants
+fail to load** (`Received 140 parameters not in model` — k_eq_v fusion mismatch).
 
 ## Layout
 
@@ -209,10 +196,11 @@ src/mlx_bench/
   quality.py      # IFEval + GSM8K via lm-evaluation-harness (opt-in)
   runner.py       # orchestration, liveness probe, disk-safe cleanup
   cli.py          # entry point + ranking
+  scripts/        # backfill / scheduled-run helpers
 results/
-  models/         # one self-contained JSON per model (primary output)
-  run_*.json      # combined per-run snapshots
-  latest.json     # latest combined run
+  models/         # one self-contained JSON per model (canonical output)
+  latest.json     # aggregate of all per-model results
+  # run_*.json per-run snapshots are written locally but gitignored
 ```
 
 ## Notes / future work
