@@ -1,0 +1,181 @@
+{
+  "repo": "mlx-community/LFM2.5-8B-A1B-MLX-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-07-01 10:33:10",
+  "result": {
+    "repo": "mlx-community/LFM2.5-8B-A1B-MLX-4bit",
+    "family": "LFM2.5-MoE",
+    "params_b": 8.0,
+    "size_gb": 4.8,
+    "downloads_30d": 394,
+    "batch_safe": true,
+    "backend": "lm",
+    "status": "ok",
+    "download_s": 419.0,
+    "load_s": 2.1,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 144,
+          "ttft_s": 0.1641,
+          "prefill_tokens_per_s": 877.6
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 578,
+          "ttft_s": 0.3203,
+          "prefill_tokens_per_s": 1804.7
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1117,
+          "ttft_s": 0.5761,
+          "prefill_tokens_per_s": 1939.0
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5446,
+          "ttft_s": 2.5159,
+          "prefill_tokens_per_s": 2164.6
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10855,
+          "ttft_s": 5.1629,
+          "prefill_tokens_per_s": 2102.5
+        }
+      ],
+      "max_prefill_tokens_per_s": 2164.6
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 5,
+      "schema_ok": 4,
+      "parse_rate": 1.0,
+      "schema_follow_rate": 0.8,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"name\": \"Maria Chen\",\n  \"age\": 42,\n  \"occupation\": \"cardiologist\",\n  \"city\": \"Boston\"\n}\n\nWe need to output a single JSON object with the required fields. The text: \"Dr. Maria Chen is 42 years old and works as a cardiologist in Boston.\"\n\nExtract:\n\n- name: \"Maria Chen\" (or \"Dr. Maria Chen\"? Usually name field could be \"Maria Chen\". The schema doesn't specify if include title. Probably just the name without title. So \"Maria Chen\". We'll use that.\n\n- age: integer 42.\n\n- occupation: \"cardiologist\".\n\n- city: \"Boston\".\n\nThus JSON:\n\n{\n  \"name\": \"Maria Chen\",\n  \"age\": 42,\n  \"occupation\": \"cardiologist\",\n  \"city\": \"Boston\"\n}\n\nNo extra fields, no extra spaces? It's okay. Must be a single JSON object. No markdown fences. Provide exactly that.\n\nCheck required fields: name, age, occupation, city. Al"
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": false,
+          "error": "schema: 'sentiment' is a required property",
+          "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\",\n    \"confidence\": 0.5\n  },\n  \"additionalProperties\": false\n}\n\nWe need to output a single JSON object with sentiment and confidence. The review: \"The battery life is terrible but the screen is gorgeous.\" This has both positive and negative aspects. So sentiment is \"mixed\". Confidence? Typically we need to assign a number between 0 and 1. Since it's mixed, maybe moderate confidence. Could be 0.5. The schema: required fields sentiment and confidence. So we output:\n\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\",\n    \"confidence\": 0.5\n  },\n  \"additionalProperties\": false\n}\n\nWe must ensure no extra text. Provide exactly that JSON. No markdown. So:\n\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\""
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"products\": [\n    {\n      \"name\": \"AeroBook laptop\",\n      \"price_usd\": 1299\n    },\n    {\n      \"name\": \"Pulse smartwatch\",\n      \"price_usd\": 199\n    },\n    {\n      \"name\": \"Nimbus earbuds\",\n      \"price_usd\": 79\n    }\n  ]\n}\n\nWe need to output a single JSON object with a \"products\" array containing three objects: each with \"name\" and \"price_usd\". The list: AeroBook laptop ($1299), Pulse smartwatch ($199), Nimbus earbuds ($79). So we need to produce:\n\n{\n  \"products\": [\n    {\"name\": \"AeroBook laptop\", \"price_usd\": 1299},\n    {\"name\": \"Pulse smartwatch\", \"price_usd\": 199},\n    {\"name\": \"Nimbus earbuds\", \"price_usd\": 79}\n  ]\n}\n\nWe must ensure no extra text, no markdown fences. Provide exactly that JSON. Ensure numbers are numbers, not strings. Also ensure no trailing commas. Provide valid"
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\n  \"title\": \"The AI Summit\",\n  \"date\": \"2026-09-14\",\n  \"location\": \"San Francisco\",\n  \"speakers\": [\n    {\n      \"name\": \"Ada Lovelace\",\n      \"role\": \"keynote\"\n    },\n    {\n      \"name\": \"Alan Turing\",\n      \"role\": \"workshop\"\n    }\n  ]\n}\n\nThe user wants a single JSON object with a specific structure. Must not add extra text. Provide JSON only. The event: \"The AI Summit happens on 2026-09-14 in San Francisco. Speakers include Ada Lovelace (keynote) and Alan Turing (workshop).\" So title: \"The AI Summit\". Date: \"2026-09-14\". Location: \"San Francisco\". Speakers array: one object for Ada Lovelace with role \"keynote\", one for Alan Turing with role \"workshop\". Ensure required fields: title, date, location, speakers. Additional properties not allowed. So output:\n\n{\n  \"title\": \"The AI Summit\",\n  "
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"ticket_id\":4471,\"urgent\":true,\"affected_users\":1500,\"summary\":\"User cannot log in after the update.\"}\n\nWe need to output a single JSON object with fields: ticket_id (integer), urgent (boolean), affected_users (integer), summary (string). The ticket description: \"User cannot log in after the update. This is urgent and affects 1500 users. Ticket #4471.\"\n\nThus ticket_id = 4471 (integer). urgent = true (since it's urgent). affected_users = 1500 (integer). summary should be a string summarizing: \"User cannot log in after the update.\" Possibly include that it's urgent and affects 1500 users. The schema requires those properties. No extra properties. So:\n\n{\n  \"ticket_id\": 4471,\n  \"urgent\": true,\n  \"affected_users\": 1500,\n  \"summary\": \"User cannot log in after the update.\"\n}\n\nWe must ensure no e"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 1.985,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 128.95,
+          "per_request_tokens_per_s_mean": 128.97,
+          "mean_latency_s": 1.985
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 2.606,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 196.49,
+          "per_request_tokens_per_s_mean": 98.27,
+          "mean_latency_s": 2.605
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 3.691,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 277.44,
+          "per_request_tokens_per_s_mean": 69.43,
+          "mean_latency_s": 3.687
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 8.248,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 248.29,
+          "per_request_tokens_per_s_mean": 31.26,
+          "mean_latency_s": 8.19
+        }
+      ],
+      "single_stream_tokens_per_s": 128.95,
+      "peak_aggregate_tokens_per_s": 277.44,
+      "peak_aggregate_at_concurrency": 4
+    },
+    "quality": {
+      "limit": 40,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 618.6,
+      "ifeval": {
+        "samples": 40,
+        "prompt_level_strict_acc": 0.575,
+        "prompt_level_loose_acc": 0.575,
+        "inst_level_strict_acc": 0.5238095238095238,
+        "inst_level_loose_acc": 0.5238095238095238
+      },
+      "gsm8k": {
+        "samples": 40,
+        "exact_match_strict": 0.425,
+        "exact_match_flexible": 0.475
+      }
+    },
+    "cache_deleted": true
+  }
+}

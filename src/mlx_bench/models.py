@@ -63,6 +63,11 @@ MODELS = [
     Model("mlx-community/Devstral-Small-2-24B-Instruct-2512-4bit", "Devstral-2", 24.0, 14.1, 138278),
     Model("mlx-community/Qwen3.6-27B-4bit", "Qwen3.6", 27.0, 16.1, 17813),
     Model("mlx-community/Qwen3.6-35B-A3B-4bit", "Qwen3.6-MoE", 35.0, 20.4, 78196),
+    # LiquidAI LFM2.5 (June 2026) -- edge models marketed on IFEval/IFBench. The
+    # 8B-A1B is a MoE (1B active); the 230M is a tiny edge model. Both non-
+    # transformer (Liquid) arch, which mlx_lm loads fine (see LFM2.5-1.2B).
+    Model("LiquidAI/LFM2.5-230M-MLX-4bit", "LFM2.5", 0.23, 0.2, 110),
+    Model("mlx-community/LFM2.5-8B-A1B-MLX-4bit", "LFM2.5-MoE", 8.0, 4.8, 394),
     # Qwythos-9B (Claude-Mythos creative distill, Qwen-based). No mlx-community
     # 4bit exists; this is a community mxfp4 conversion -- non-standard quant, so
     # default_run=False until a load smoke-test confirms mlx_lm can load it.

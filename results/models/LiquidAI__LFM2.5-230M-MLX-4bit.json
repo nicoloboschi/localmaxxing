@@ -1,0 +1,181 @@
+{
+  "repo": "LiquidAI/LFM2.5-230M-MLX-4bit",
+  "machine": {
+    "chip": "Apple M3 Max",
+    "ram_gb": 36,
+    "platform": "darwin"
+  },
+  "config": {
+    "levels": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "max_tokens": 256,
+    "port": 8080
+  },
+  "measured_at": "2026-07-01 10:15:03",
+  "result": {
+    "repo": "LiquidAI/LFM2.5-230M-MLX-4bit",
+    "family": "LFM2.5",
+    "params_b": 0.23,
+    "size_gb": 0.2,
+    "downloads_30d": 110,
+    "batch_safe": true,
+    "backend": "lm",
+    "status": "ok",
+    "download_s": 30.5,
+    "load_s": 2.1,
+    "prefill": {
+      "sizes": [
+        {
+          "target_tokens": 100,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 145,
+          "ttft_s": 0.0222,
+          "prefill_tokens_per_s": 6541.2
+        },
+        {
+          "target_tokens": 500,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 579,
+          "ttft_s": 0.0422,
+          "prefill_tokens_per_s": 13732.3
+        },
+        {
+          "target_tokens": 1000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 1118,
+          "ttft_s": 0.0799,
+          "prefill_tokens_per_s": 13995.6
+        },
+        {
+          "target_tokens": 5000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 5447,
+          "ttft_s": 0.421,
+          "prefill_tokens_per_s": 12939.3
+        },
+        {
+          "target_tokens": 10000,
+          "ok": true,
+          "error": null,
+          "prompt_tokens": 10856,
+          "ttft_s": 1.3007,
+          "prefill_tokens_per_s": 8346.5
+        }
+      ],
+      "max_prefill_tokens_per_s": 13995.6
+    },
+    "schema": {
+      "num_tasks": 5,
+      "parse_ok": 5,
+      "schema_ok": 1,
+      "parse_rate": 1.0,
+      "schema_follow_rate": 0.2,
+      "tasks": [
+        {
+          "task": "person_extract",
+          "parse_ok": true,
+          "schema_ok": false,
+          "error": "schema: 'name' is a required property",
+          "raw": "```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": \"Dr. Maria Chen\",\n    \"age\": 42,\n    \"occupation\": \"cardiologist\",\n    \"city\": \"Boston\"\n  },\n  \"required\": false\n}\n```"
+        },
+        {
+          "task": "sentiment_enum",
+          "parse_ok": true,
+          "schema_ok": false,
+          "error": "schema: 'sentiment' is a required property",
+          "raw": "{\"type\": \"object\",\n  \"properties\": {\"sentiment\": \"negative\", \"confidence\": 0.7}, \"required\": [\"sentiment\", \"confidence\"]}"
+        },
+        {
+          "task": "product_list",
+          "parse_ok": true,
+          "schema_ok": false,
+          "error": "schema: 'products' is a required property",
+          "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"products\": [\n      {\n        \"name\": \"AeroBook laptop\",\n        \"price_usd\": 1299\n      },\n      {\n        \"name\": \"Pulse smartwatch\",\n        \"price_usd\": 199\n      },\n      {\n        \"name\": \"Nimbus earbuds\",\n        \"price_usd\": 79\n      }\n    ]\n  },\n  \"additionalProperties\": false\n}"
+        },
+        {
+          "task": "nested_event",
+          "parse_ok": true,
+          "schema_ok": true,
+          "error": null,
+          "raw": "{\"type\": \"object\",\n  \"properties\": {\"title\": \"AI Summit\", \"date\": \"2026-09-14\", \"location\": \"San Francisco\", \"speakers\": [{\"name\": \"Ada Lovelace\", \"role\": \"keynote\"}, {\"name\": \"Alan Turing\", \"role\": \"workshop\"}]}"
+        },
+        {
+          "task": "bool_and_types",
+          "parse_ok": true,
+          "schema_ok": false,
+          "error": "schema: 'ticket_id' is a required property",
+          "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"ticket_id\": 4471,\n    \"urgent\": true,\n    \"affected_users\": 1500,\n    \"summary\": \"This is urgent and affects 1500 users.\"\n  },\n  \"additionalProperties\": false\n}"
+        }
+      ]
+    },
+    "speed": {
+      "max_tokens_per_request": 256,
+      "levels": [
+        {
+          "concurrency": 1,
+          "wall_time_s": 0.84,
+          "total_completion_tokens": 256,
+          "aggregate_tokens_per_s": 304.64,
+          "per_request_tokens_per_s_mean": 304.72,
+          "mean_latency_s": 0.84
+        },
+        {
+          "concurrency": 2,
+          "wall_time_s": 0.595,
+          "total_completion_tokens": 512,
+          "aggregate_tokens_per_s": 861.02,
+          "per_request_tokens_per_s_mean": 430.78,
+          "mean_latency_s": 0.594
+        },
+        {
+          "concurrency": 4,
+          "wall_time_s": 1.16,
+          "total_completion_tokens": 1024,
+          "aggregate_tokens_per_s": 883.06,
+          "per_request_tokens_per_s_mean": 220.89,
+          "mean_latency_s": 1.159
+        },
+        {
+          "concurrency": 8,
+          "wall_time_s": 1.282,
+          "total_completion_tokens": 2048,
+          "aggregate_tokens_per_s": 1597.29,
+          "per_request_tokens_per_s_mean": 199.87,
+          "mean_latency_s": 1.281
+        }
+      ],
+      "single_stream_tokens_per_s": 304.64,
+      "peak_aggregate_tokens_per_s": 1597.29,
+      "peak_aggregate_at_concurrency": 8
+    },
+    "quality": {
+      "limit": 40,
+      "tasks": [
+        "ifeval",
+        "gsm8k"
+      ],
+      "elapsed_s": 42.5,
+      "ifeval": {
+        "samples": 40,
+        "prompt_level_strict_acc": 0.525,
+        "prompt_level_loose_acc": 0.575,
+        "inst_level_strict_acc": 0.6349206349206349,
+        "inst_level_loose_acc": 0.6666666666666666
+      },
+      "gsm8k": {
+        "samples": 40,
+        "exact_match_strict": 0.225,
+        "exact_match_flexible": 0.225
+      }
+    },
+    "cache_deleted": true
+  }
+}

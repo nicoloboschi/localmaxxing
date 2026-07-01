@@ -17,6 +17,168 @@
   },
   "models": [
     {
+      "repo": "LiquidAI/LFM2.5-230M-MLX-4bit",
+      "family": "LFM2.5",
+      "params_b": 0.23,
+      "size_gb": 0.2,
+      "downloads_30d": 110,
+      "batch_safe": true,
+      "backend": "lm",
+      "status": "ok",
+      "download_s": 30.5,
+      "load_s": 2.1,
+      "prefill": {
+        "sizes": [
+          {
+            "target_tokens": 100,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 145,
+            "ttft_s": 0.0222,
+            "prefill_tokens_per_s": 6541.2
+          },
+          {
+            "target_tokens": 500,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 579,
+            "ttft_s": 0.0422,
+            "prefill_tokens_per_s": 13732.3
+          },
+          {
+            "target_tokens": 1000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 1118,
+            "ttft_s": 0.0799,
+            "prefill_tokens_per_s": 13995.6
+          },
+          {
+            "target_tokens": 5000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 5447,
+            "ttft_s": 0.421,
+            "prefill_tokens_per_s": 12939.3
+          },
+          {
+            "target_tokens": 10000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 10856,
+            "ttft_s": 1.3007,
+            "prefill_tokens_per_s": 8346.5
+          }
+        ],
+        "max_prefill_tokens_per_s": 13995.6
+      },
+      "schema": {
+        "num_tasks": 5,
+        "parse_ok": 5,
+        "schema_ok": 1,
+        "parse_rate": 1.0,
+        "schema_follow_rate": 0.2,
+        "tasks": [
+          {
+            "task": "person_extract",
+            "parse_ok": true,
+            "schema_ok": false,
+            "error": "schema: 'name' is a required property",
+            "raw": "```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"name\": \"Dr. Maria Chen\",\n    \"age\": 42,\n    \"occupation\": \"cardiologist\",\n    \"city\": \"Boston\"\n  },\n  \"required\": false\n}\n```"
+          },
+          {
+            "task": "sentiment_enum",
+            "parse_ok": true,
+            "schema_ok": false,
+            "error": "schema: 'sentiment' is a required property",
+            "raw": "{\"type\": \"object\",\n  \"properties\": {\"sentiment\": \"negative\", \"confidence\": 0.7}, \"required\": [\"sentiment\", \"confidence\"]}"
+          },
+          {
+            "task": "product_list",
+            "parse_ok": true,
+            "schema_ok": false,
+            "error": "schema: 'products' is a required property",
+            "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"products\": [\n      {\n        \"name\": \"AeroBook laptop\",\n        \"price_usd\": 1299\n      },\n      {\n        \"name\": \"Pulse smartwatch\",\n        \"price_usd\": 199\n      },\n      {\n        \"name\": \"Nimbus earbuds\",\n        \"price_usd\": 79\n      }\n    ]\n  },\n  \"additionalProperties\": false\n}"
+          },
+          {
+            "task": "nested_event",
+            "parse_ok": true,
+            "schema_ok": true,
+            "error": null,
+            "raw": "{\"type\": \"object\",\n  \"properties\": {\"title\": \"AI Summit\", \"date\": \"2026-09-14\", \"location\": \"San Francisco\", \"speakers\": [{\"name\": \"Ada Lovelace\", \"role\": \"keynote\"}, {\"name\": \"Alan Turing\", \"role\": \"workshop\"}]}"
+          },
+          {
+            "task": "bool_and_types",
+            "parse_ok": true,
+            "schema_ok": false,
+            "error": "schema: 'ticket_id' is a required property",
+            "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"ticket_id\": 4471,\n    \"urgent\": true,\n    \"affected_users\": 1500,\n    \"summary\": \"This is urgent and affects 1500 users.\"\n  },\n  \"additionalProperties\": false\n}"
+          }
+        ]
+      },
+      "speed": {
+        "max_tokens_per_request": 256,
+        "levels": [
+          {
+            "concurrency": 1,
+            "wall_time_s": 0.84,
+            "total_completion_tokens": 256,
+            "aggregate_tokens_per_s": 304.64,
+            "per_request_tokens_per_s_mean": 304.72,
+            "mean_latency_s": 0.84
+          },
+          {
+            "concurrency": 2,
+            "wall_time_s": 0.595,
+            "total_completion_tokens": 512,
+            "aggregate_tokens_per_s": 861.02,
+            "per_request_tokens_per_s_mean": 430.78,
+            "mean_latency_s": 0.594
+          },
+          {
+            "concurrency": 4,
+            "wall_time_s": 1.16,
+            "total_completion_tokens": 1024,
+            "aggregate_tokens_per_s": 883.06,
+            "per_request_tokens_per_s_mean": 220.89,
+            "mean_latency_s": 1.159
+          },
+          {
+            "concurrency": 8,
+            "wall_time_s": 1.282,
+            "total_completion_tokens": 2048,
+            "aggregate_tokens_per_s": 1597.29,
+            "per_request_tokens_per_s_mean": 199.87,
+            "mean_latency_s": 1.281
+          }
+        ],
+        "single_stream_tokens_per_s": 304.64,
+        "peak_aggregate_tokens_per_s": 1597.29,
+        "peak_aggregate_at_concurrency": 8
+      },
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 42.5,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.525,
+          "prompt_level_loose_acc": 0.575,
+          "inst_level_strict_acc": 0.6349206349206349,
+          "inst_level_loose_acc": 0.6666666666666666
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.225,
+          "exact_match_flexible": 0.225
+        }
+      },
+      "cache_deleted": true
+    },
+    {
       "repo": "mlx-community/Devstral-Small-2-24B-Instruct-2512-4bit",
       "family": "Devstral-2",
       "params_b": 24.0,
@@ -335,6 +497,168 @@
           "samples": 40,
           "exact_match_strict": 0.55,
           "exact_match_flexible": 0.55
+        }
+      },
+      "cache_deleted": true
+    },
+    {
+      "repo": "mlx-community/LFM2.5-8B-A1B-MLX-4bit",
+      "family": "LFM2.5-MoE",
+      "params_b": 8.0,
+      "size_gb": 4.8,
+      "downloads_30d": 394,
+      "batch_safe": true,
+      "backend": "lm",
+      "status": "ok",
+      "download_s": 419.0,
+      "load_s": 2.1,
+      "prefill": {
+        "sizes": [
+          {
+            "target_tokens": 100,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 144,
+            "ttft_s": 0.1641,
+            "prefill_tokens_per_s": 877.6
+          },
+          {
+            "target_tokens": 500,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 578,
+            "ttft_s": 0.3203,
+            "prefill_tokens_per_s": 1804.7
+          },
+          {
+            "target_tokens": 1000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 1117,
+            "ttft_s": 0.5761,
+            "prefill_tokens_per_s": 1939.0
+          },
+          {
+            "target_tokens": 5000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 5446,
+            "ttft_s": 2.5159,
+            "prefill_tokens_per_s": 2164.6
+          },
+          {
+            "target_tokens": 10000,
+            "ok": true,
+            "error": null,
+            "prompt_tokens": 10855,
+            "ttft_s": 5.1629,
+            "prefill_tokens_per_s": 2102.5
+          }
+        ],
+        "max_prefill_tokens_per_s": 2164.6
+      },
+      "schema": {
+        "num_tasks": 5,
+        "parse_ok": 5,
+        "schema_ok": 4,
+        "parse_rate": 1.0,
+        "schema_follow_rate": 0.8,
+        "tasks": [
+          {
+            "task": "person_extract",
+            "parse_ok": true,
+            "schema_ok": true,
+            "error": null,
+            "raw": "{\n  \"name\": \"Maria Chen\",\n  \"age\": 42,\n  \"occupation\": \"cardiologist\",\n  \"city\": \"Boston\"\n}\n\nWe need to output a single JSON object with the required fields. The text: \"Dr. Maria Chen is 42 years old and works as a cardiologist in Boston.\"\n\nExtract:\n\n- name: \"Maria Chen\" (or \"Dr. Maria Chen\"? Usually name field could be \"Maria Chen\". The schema doesn't specify if include title. Probably just the name without title. So \"Maria Chen\". We'll use that.\n\n- age: integer 42.\n\n- occupation: \"cardiologist\".\n\n- city: \"Boston\".\n\nThus JSON:\n\n{\n  \"name\": \"Maria Chen\",\n  \"age\": 42,\n  \"occupation\": \"cardiologist\",\n  \"city\": \"Boston\"\n}\n\nNo extra fields, no extra spaces? It's okay. Must be a single JSON object. No markdown fences. Provide exactly that.\n\nCheck required fields: name, age, occupation, city. Al"
+          },
+          {
+            "task": "sentiment_enum",
+            "parse_ok": true,
+            "schema_ok": false,
+            "error": "schema: 'sentiment' is a required property",
+            "raw": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\",\n    \"confidence\": 0.5\n  },\n  \"additionalProperties\": false\n}\n\nWe need to output a single JSON object with sentiment and confidence. The review: \"The battery life is terrible but the screen is gorgeous.\" This has both positive and negative aspects. So sentiment is \"mixed\". Confidence? Typically we need to assign a number between 0 and 1. Since it's mixed, maybe moderate confidence. Could be 0.5. The schema: required fields sentiment and confidence. So we output:\n\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\",\n    \"confidence\": 0.5\n  },\n  \"additionalProperties\": false\n}\n\nWe must ensure no extra text. Provide exactly that JSON. No markdown. So:\n\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"sentiment\": \"mixed\""
+          },
+          {
+            "task": "product_list",
+            "parse_ok": true,
+            "schema_ok": true,
+            "error": null,
+            "raw": "{\n  \"products\": [\n    {\n      \"name\": \"AeroBook laptop\",\n      \"price_usd\": 1299\n    },\n    {\n      \"name\": \"Pulse smartwatch\",\n      \"price_usd\": 199\n    },\n    {\n      \"name\": \"Nimbus earbuds\",\n      \"price_usd\": 79\n    }\n  ]\n}\n\nWe need to output a single JSON object with a \"products\" array containing three objects: each with \"name\" and \"price_usd\". The list: AeroBook laptop ($1299), Pulse smartwatch ($199), Nimbus earbuds ($79). So we need to produce:\n\n{\n  \"products\": [\n    {\"name\": \"AeroBook laptop\", \"price_usd\": 1299},\n    {\"name\": \"Pulse smartwatch\", \"price_usd\": 199},\n    {\"name\": \"Nimbus earbuds\", \"price_usd\": 79}\n  ]\n}\n\nWe must ensure no extra text, no markdown fences. Provide exactly that JSON. Ensure numbers are numbers, not strings. Also ensure no trailing commas. Provide valid"
+          },
+          {
+            "task": "nested_event",
+            "parse_ok": true,
+            "schema_ok": true,
+            "error": null,
+            "raw": "{\n  \"title\": \"The AI Summit\",\n  \"date\": \"2026-09-14\",\n  \"location\": \"San Francisco\",\n  \"speakers\": [\n    {\n      \"name\": \"Ada Lovelace\",\n      \"role\": \"keynote\"\n    },\n    {\n      \"name\": \"Alan Turing\",\n      \"role\": \"workshop\"\n    }\n  ]\n}\n\nThe user wants a single JSON object with a specific structure. Must not add extra text. Provide JSON only. The event: \"The AI Summit happens on 2026-09-14 in San Francisco. Speakers include Ada Lovelace (keynote) and Alan Turing (workshop).\" So title: \"The AI Summit\". Date: \"2026-09-14\". Location: \"San Francisco\". Speakers array: one object for Ada Lovelace with role \"keynote\", one for Alan Turing with role \"workshop\". Ensure required fields: title, date, location, speakers. Additional properties not allowed. So output:\n\n{\n  \"title\": \"The AI Summit\",\n  "
+          },
+          {
+            "task": "bool_and_types",
+            "parse_ok": true,
+            "schema_ok": true,
+            "error": null,
+            "raw": "{\"ticket_id\":4471,\"urgent\":true,\"affected_users\":1500,\"summary\":\"User cannot log in after the update.\"}\n\nWe need to output a single JSON object with fields: ticket_id (integer), urgent (boolean), affected_users (integer), summary (string). The ticket description: \"User cannot log in after the update. This is urgent and affects 1500 users. Ticket #4471.\"\n\nThus ticket_id = 4471 (integer). urgent = true (since it's urgent). affected_users = 1500 (integer). summary should be a string summarizing: \"User cannot log in after the update.\" Possibly include that it's urgent and affects 1500 users. The schema requires those properties. No extra properties. So:\n\n{\n  \"ticket_id\": 4471,\n  \"urgent\": true,\n  \"affected_users\": 1500,\n  \"summary\": \"User cannot log in after the update.\"\n}\n\nWe must ensure no e"
+          }
+        ]
+      },
+      "speed": {
+        "max_tokens_per_request": 256,
+        "levels": [
+          {
+            "concurrency": 1,
+            "wall_time_s": 1.985,
+            "total_completion_tokens": 256,
+            "aggregate_tokens_per_s": 128.95,
+            "per_request_tokens_per_s_mean": 128.97,
+            "mean_latency_s": 1.985
+          },
+          {
+            "concurrency": 2,
+            "wall_time_s": 2.606,
+            "total_completion_tokens": 512,
+            "aggregate_tokens_per_s": 196.49,
+            "per_request_tokens_per_s_mean": 98.27,
+            "mean_latency_s": 2.605
+          },
+          {
+            "concurrency": 4,
+            "wall_time_s": 3.691,
+            "total_completion_tokens": 1024,
+            "aggregate_tokens_per_s": 277.44,
+            "per_request_tokens_per_s_mean": 69.43,
+            "mean_latency_s": 3.687
+          },
+          {
+            "concurrency": 8,
+            "wall_time_s": 8.248,
+            "total_completion_tokens": 2048,
+            "aggregate_tokens_per_s": 248.29,
+            "per_request_tokens_per_s_mean": 31.26,
+            "mean_latency_s": 8.19
+          }
+        ],
+        "single_stream_tokens_per_s": 128.95,
+        "peak_aggregate_tokens_per_s": 277.44,
+        "peak_aggregate_at_concurrency": 4
+      },
+      "quality": {
+        "limit": 40,
+        "tasks": [
+          "ifeval",
+          "gsm8k"
+        ],
+        "elapsed_s": 618.6,
+        "ifeval": {
+          "samples": 40,
+          "prompt_level_strict_acc": 0.575,
+          "prompt_level_loose_acc": 0.575,
+          "inst_level_strict_acc": 0.5238095238095238,
+          "inst_level_loose_acc": 0.5238095238095238
+        },
+        "gsm8k": {
+          "samples": 40,
+          "exact_match_strict": 0.425,
+          "exact_match_flexible": 0.475
         }
       },
       "cache_deleted": true

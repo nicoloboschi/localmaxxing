@@ -14,7 +14,7 @@ Built for an Apple M3 Max (36 GB). Results are written to `results/*.json`.
 
 ## Results
 
-Apple M3 Max (36 GB), all models 4-bit MLX. **17 models** benchmarked across decode
+Apple M3 Max (36 GB), all models 4-bit MLX. **19 models** benchmarked across decode
 throughput (1/2/4/8 concurrency), prefill/TTFT by input size, JSON-schema
 following, and quality (IFEval + GSM8K, 40 items, direct-answer mode). Full data in
 [`results/models/`](results/models) (one self-contained JSON per model);
@@ -24,14 +24,16 @@ following, and quality (IFEval + GSM8K, 40 items, direct-answer mode). Full data
 
 | Model | Params | Backend | Decode 1× (tok/s) | Decode peak (tok/s @conc) | Prefill @1k (tok/s) | Schema | GSM8K | IFEval |
 |---|--:|:--:|--:|--:|--:|:--:|--:|--:|
+| LFM2.5-230M-MLX-4bit | 0.23B | lm | 304.6 | 1597 @c8 | 13996 | 0.20 | 0.23 | 0.53 |
 | LFM2.5-1.2B-Instruct-4bit | 1.2B | lm | 235.7 | 460 @c4 | 2342 | 1.00 | 0.55 | 0.72 |
+| LFM2.5-8B-A1B-MLX-4bit | 8.0B | lm | 128.9 | 277 @c4 | 1939 | 0.80 | 0.47 | 0.57 |
 | Ministral-3-3B-Instruct-2512-4bit | 3.0B | lm | 93.9 | 222 @c4 | 1699 | 1.00 | 0.72 | 0.55 |
 | Qwen3.5-2B-4bit | 2.0B | lm | 84.3 | 219 @c4 | 1405 | 0.80 | 0.50 | 0.57 |
 | Qwen3.5-4B-4bit | 4.0B | lm | 69.9 | 149 @c8 | 825 | 1.00 | 0.78 | 0.80 |
 | Phi-4-mini-instruct-4bit | 3.8B | lm | 67.8 | 208 @c8 | 1081 | 1.00 | 0.65 | 0.50 |
 | gemma-3-4b-it-qat-4bit | 4.3B | lm | 63.0 | 197 @c8 | 970 | 1.00 | 0.72 | 0.65 |
-| gemma-4-26b-a4b-it-4bit | 26.0B (MoE) | vlm | 59.0 | 168 @c8 ¹ | 786 | 1.00 | 0.80 | 0.85 |
-| Qwen3.6-35B-A3B-4bit | 35.0B (MoE) | lm | 41.5 | 95 @c8 | 919 | 1.00 | 0.95 | 0.82 |
+| gemma-4-26b-a4b-it-4bit | 26.0B | vlm | 59.0 | 168 @c8 ¹ | 786 | 1.00 | 0.80 | 0.85 |
+| Qwen3.6-35B-A3B-4bit | 35.0B | lm | 41.5 | 95 @c8 | 919 | 1.00 | 0.95 | 0.82 |
 | Qwen3.5-9B-4bit | 9.0B | lm | 27.8 | 73 @c8 | 345 | 1.00 | 0.75 | 0.78 |
 | gemma-3-12b-it-qat-4bit | 12.0B | lm | 25.9 | 52 @c4 | 336 | 1.00 | 0.88 | 0.82 |
 | phi-4-4bit | 14.7B | lm | 25.9 | 38 @c4 | 301 | 1.00 | 0.90 | 0.53 |
@@ -42,21 +44,17 @@ following, and quality (IFEval + GSM8K, 40 items, direct-answer mode). Full data
 | gemma-3-27b-it-qat-4bit | 27.0B | lm | 7.1 | 20 @c8 | 148 | 1.00 | 0.88 | 0.85 |
 | Mistral-Small-3.2-24B-Instruct-2506-4bit | 24.0B | lm | 5.7 | 20 @c8 | 183 | 1.00 | 0.75 | 0.65 |
 
-Schema = JSON-schema follow rate (5 tasks). GSM8K = exact-match (flexible-extract).
-IFEval = prompt-level strict accuracy. ¹ gemma-4 runs via the **mlx-vlm** backend
-(separate server). ⚠️ the Claude-Opus *distill*'s 0.05 is a measurement artifact
-(it's extremely verbose and was truncated by GSM8K's old 256-token cap before the
-final answer; its IFEval 0.47 and schema 1.0 confirm the model works — the harness
-now uses a 1024-token budget, value predates that fix).
+¹ gemma-4 runs via the **mlx-vlm** backend (separate server). ⚠️ the Claude-Opus *distill*'s GSM8K is a truncation artifact (see note); predates the 1024-token fix.
 
-The gemma-4 **e2b / e4b** MatFormer variants are in the registry but **fail to load**
-on mlx-vlm (`Received 140 parameters not in model`), so they're excluded.
+The gemma-4 **e2b / e4b** MatFormer variants are in the registry but **fail to load** on mlx-vlm, so they're excluded.
 
 ### Prefill throughput by input size (tok/s)
 
 | Model | 100t | 500t | 1000t | 5000t | 10000t |
 |---|--:|--:|--:|--:|--:|
+| LFM2.5-230M-MLX-4bit | 6541 | 13732 | 13996 | 12939 | 8346 |
 | LFM2.5-1.2B-Instruct-4bit | 2464 | 3015 | 2342 | 2805 | 2764 |
+| LFM2.5-8B-A1B-MLX-4bit | 878 | 1805 | 1939 | 2165 | 2102 |
 | Ministral-3-3B-Instruct-2512-4bit | 2905 | 2010 | 1699 | 1174 | 978 |
 | Qwen3.5-2B-4bit | 513 | 1268 | 1405 | 1888 | 1833 |
 | Phi-4-mini-instruct-4bit | 521 | 950 | 1081 | 1080 | 916 |
@@ -75,9 +73,11 @@ on mlx-vlm (`Received 140 parameters not in model`), so they're excluded.
 | gemma-3-27b-it-qat-4bit | 119 | 141 | 148 | 141 | 97 |
 
 **Takeaways:**
-- **Speed:** LFM2.5-1.2B (a non-transformer Liquid model) is the throughput king —
-  236 tok/s single-stream, 460 @c4, ~2.5–3k tok/s prefill. Decode scales ~3–4× with
-  concurrency on small models; dense 24–27B models are single-stream-bound (~6–13 tok/s).
+- **Speed:** the non-transformer **LiquidAI LFM2.5** models dominate throughput —
+  **LFM2.5-230M** hits 305 tok/s single-stream, **1597 @c8**, and ~14k tok/s prefill;
+  the 1.2B and 8B-A1B MoE follow. Decode scales ~3–4× with concurrency on small
+  models; dense 24–27B models are single-stream-bound (~6–13 tok/s). But the tiny
+  edge models trade quality for speed (230M: schema 0.20, GSM8K 0.23).
 - **Quality:** **Qwen3.6-27B** tops GSM8K (perfect **1.00**) at 0.82 IFEval; the
   **Qwen3.6-35B-A3B MoE** is the best quality-per-speed pick (0.95 GSM8K / 0.82 IFEval
   at a fast 41 tok/s). **phi-4** and **Devstral-2-24B** also hit 0.90 GSM8K (phi-4 is a
